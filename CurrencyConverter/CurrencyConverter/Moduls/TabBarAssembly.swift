@@ -13,17 +13,15 @@ final class TabBarAssembly: UITabBarController {
         super.viewDidLoad()
         self.viewControllers = [self.createListCurrenciesViewController(),
                                 self.createCurrencyConverterViewController(),
-                                self.createCurrencySelectionViewController(),
                                 self.createFavoriteCurrenciesViewController()]
-//        self.tabBar.tintColor = .systemGray5
     }
 }
 
 private extension TabBarAssembly {
     
     func createListCurrenciesViewController() -> UIViewController {
-        let vc = ListCurrenciesViewController()
-        let image = UIImage(systemName: "dollarsign.arrow.circlepath")
+        let vc = ListCurrenciesAssembly.build()
+        let image = UIImage(systemName: "dollarsign.circle")
         vc.tabBarItem = UITabBarItem(title: "List",
                                      image: image,
                                      tag: 0)
@@ -32,21 +30,11 @@ private extension TabBarAssembly {
     }
     
     func createCurrencyConverterViewController() -> UIViewController {
-        let vc = CurrencyConverterViewController()
+        let vc = CurrencyConverterAssembly.build()
         let image = UIImage(systemName: "arrow.triangle.2.circlepath.circle")
-        vc.tabBarItem = UITabBarItem(title: "Exchange",
+        vc.tabBarItem = UITabBarItem(title: "Converter",
                                      image: image,
                                      tag: 1)
-        
-        return UINavigationController(rootViewController: vc)
-    }
-    
-    func createCurrencySelectionViewController() -> UIViewController {
-        let vc = CurrencySelectionViewController()
-        let image = UIImage(systemName: "arrow.triangle.2.circlepath.circle")
-        vc.tabBarItem = UITabBarItem(title: "exchange",
-                                     image: image,
-                                     tag: 2)
         
         return UINavigationController(rootViewController: vc)
     }

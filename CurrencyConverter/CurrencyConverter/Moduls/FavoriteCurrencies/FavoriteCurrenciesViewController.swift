@@ -11,6 +11,6 @@ final class FavoriteCurrenciesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .magenta
+        self.view.backgroundColor = .white
     }
 }
