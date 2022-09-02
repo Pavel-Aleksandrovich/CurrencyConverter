@@ -15,6 +15,7 @@ final class CurrencyConverterCell: UITableViewCell {
     private let currencyImageView = UIImageView()
     private let charCodeLabel = UILabel()
     var textFieldHandler: ((String?) -> ())?
+    var onSelectCurrencyTappedHandler: (() -> ())?
     
     override init(style: UITableViewCell.CellStyle,
                   reuseIdentifier: String?) {
@@ -76,6 +77,7 @@ final class CurrencyConverterCell: UITableViewCell {
     }
     
     @objc func tap() {
+        self.onSelectCurrencyTappedHandler?()
         print("tap")
     }
 }

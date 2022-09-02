@@ -13,6 +13,7 @@ enum CurrencyType: Int, CaseIterable {
 }
 
 protocol ICurrencyConverterViewController: AnyObject {
+    var onSelectCurrencyTappedHandler: (() -> ())? { get set }
     func reloadData()
 }
 
@@ -20,6 +21,8 @@ final class CurrencyConverterViewController: UIViewController {
     
     private let presenter: ICurrencyConverterPresenter
     private let tableView = UITableView()
+    
+    var onSelectCurrencyTappedHandler: (() -> ())?
     
     init(presenter: ICurrencyConverterPresenter) {
         self.presenter = presenter
@@ -90,11 +93,16 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
             let value = self.presenter.getTextFieldValue()
             cell.setTextFieldValue(value)
             cell.textFieldHandler = { number in
+                
                 print(number)
             }
         }
         
-//        cell.selectionStyle = .none
+        
+        cell.onSelectCurrencyTappedHandler = {
+            self.onSelectCurrencyTappedHandler?()
+            print(indexPath.row)
+        }
         
         return cell
     }

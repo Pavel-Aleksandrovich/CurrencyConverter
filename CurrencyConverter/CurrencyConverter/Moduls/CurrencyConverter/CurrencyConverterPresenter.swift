@@ -19,6 +19,7 @@ final class CurrencyConverterPresenter {
     
     private weak var controller: ICurrencyConverterViewController?
     private let storageService: ICoreDataStorage
+    private let router: ICurrencyConverterRouter
     
     var val: String? {
         didSet {
@@ -26,8 +27,10 @@ final class CurrencyConverterPresenter {
         }
     }
     
-    init(storageService: ICoreDataStorage) {
+    init(storageService: ICoreDataStorage,
+         router: ICurrencyConverterRouter) {
         self.storageService = storageService
+        self.router = router
     }
 }
 
@@ -37,6 +40,11 @@ extension CurrencyConverterPresenter: ICurrencyConverterPresenter {
         self.controller = controller
         
         print(try? self.storageService.getListCurrencies().count)
+        
+        self.controller?.onSelectCurrencyTappedHandler = {
+            self.router.pushToSelectCurrencyModul()
+            print("46")
+        }
     }
     
     func numberOfRowsInSection() -> Int {
