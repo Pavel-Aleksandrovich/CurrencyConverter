@@ -40,6 +40,7 @@
 		84DC684928C1B111006BCEB0 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC684828C1B111006BCEB0 /* CurrencySelectionCell.swift */; };
 		84DC684B28C1B2E0006BCEB0 /* CurrencyConverterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC684A28C1B2E0006BCEB0 /* CurrencyConverterRouter.swift */; };
 		84DC684D28C5B1C9006BCEB0 /* CurrencyConverterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC684C28C5B1C9006BCEB0 /* CurrencyConverterViewModel.swift */; };
+		84DC685828C60C91006BCEB0 /* CalculatorCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC685728C60C91006BCEB0 /* CalculatorCollectionCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		84DC684828C1B111006BCEB0 /* CurrencySelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionCell.swift; sourceTree = "<group>"; };
 		84DC684A28C1B2E0006BCEB0 /* CurrencyConverterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterRouter.swift; sourceTree = "<group>"; };
 		84DC684C28C5B1C9006BCEB0 /* CurrencyConverterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterViewModel.swift; sourceTree = "<group>"; };
+		84DC685728C60C91006BCEB0 /* CalculatorCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCollectionCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +180,7 @@
 			children = (
 				84DC681228BDD18F006BCEB0 /* CurrencyConverterViewController.swift */,
 				84DC684C28C5B1C9006BCEB0 /* CurrencyConverterViewModel.swift */,
+				84DC685728C60C91006BCEB0 /* CalculatorCollectionCell.swift */,
 				84DC682428BE56C3006BCEB0 /* CurrencyConverterCell.swift */,
 				84DC682028BE3052006BCEB0 /* CurrencyConverterPresenter.swift */,
 				84DC684A28C1B2E0006BCEB0 /* CurrencyConverterRouter.swift */,
@@ -295,6 +298,7 @@
 				84DC67F828BDC7E3006BCEB0 /* ListCurrenciesViewController.swift in Sources */,
 				84DC681528BDD1A5006BCEB0 /* CurrencySelectionViewController.swift in Sources */,
 				84DC67F428BDC7E3006BCEB0 /* AppDelegate.swift in Sources */,
+				84DC685828C60C91006BCEB0 /* CalculatorCollectionCell.swift in Sources */,
 				84DC684928C1B111006BCEB0 /* CurrencySelectionCell.swift in Sources */,
 				84DC683028BF6923006BCEB0 /* CRBParser.swift in Sources */,
 				84DC683F28C0BE4C006BCEB0 /* CurrencyEntity+CoreDataClass.swift in Sources */,
@@ -464,6 +468,7 @@
 				INFOPLIST_FILE = CurrencyConverter/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -492,6 +497,7 @@
 				INFOPLIST_FILE = CurrencyConverter/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;

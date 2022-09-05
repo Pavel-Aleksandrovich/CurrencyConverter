@@ -27,6 +27,8 @@ final class CurrencyConverterPresenter {
     
     private var index = Int()
     
+    var indexTable = 0
+    
     var val: String = ""
     
     var secondCurrencyEnteredValue = ""
@@ -72,6 +74,23 @@ extension CurrencyConverterPresenter: ICurrencyConverterPresenter {
             }
             
             self.controller?.reloadData()
+        }
+        
+        self.controller?.onCalculatorCellTappedHandler = { index in
+            let value = CalculatorType.allCases[index].rawValue
+            
+            switch self.getCurrencyTypeByIndex(self.indexTable) {
+            case .first:
+                self.val += value
+            case .second:
+                self.secondCurrencyEnteredValue += value
+            }
+            
+            self.controller?.reloadData()
+        }
+        
+        self.controller?.onCellTappedHandler = { index in
+            self.indexTable = index
         }
     }
     

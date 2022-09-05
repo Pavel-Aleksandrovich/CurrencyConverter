@@ -11,7 +11,7 @@ final class CurrencyConverterCell: UITableViewCell {
     
     static let id = String(describing: CurrencyConverterCell.self)
     
-    private let numberTextField = UITextField()
+    private let numberTextField = UILabel()
     private let currencyImageView = UIImageView()
     private let charCodeLabel = UILabel()
     var textFieldHandler: ((String?) -> ())?
@@ -80,8 +80,6 @@ final class CurrencyConverterCell: UITableViewCell {
         self.configAppearance()
         
         self.currencyImageView.contentMode = .scaleAspectFill
-        
-        self.numberTextField.becomeFirstResponder()
     }
     
     required init?(coder: NSCoder) {
@@ -114,7 +112,7 @@ private extension CurrencyConverterCell {
     
     func configAppearance() {
         self.configTextField()
-        self.configTapGesture()
+//        self.configTapGesture()
     }
     
     func configTapGesture() {
@@ -126,12 +124,12 @@ private extension CurrencyConverterCell {
     }
     
     func configTextField() {
-        self.numberTextField.placeholder = "Tap"
-        self.numberTextField.keyboardType = .numberPad
-        self.numberTextField.addTarget(self,
-                                 action: #selector
-                                 (self.textFieldEditingChanged),
-                                 for: .editingChanged)
+//        self.numberTextField.placeholder = "Tap"
+//        self.numberTextField.inputView = UIView()
+//        self.numberTextField.addTarget(self,
+//                                 action: #selector
+//                                 (self.textFieldEditingChanged),
+//                                 for: .editingChanged)
     }
     
     @objc func textFieldEditingChanged() {
