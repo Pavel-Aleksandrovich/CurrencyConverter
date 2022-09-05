@@ -17,10 +17,18 @@ final class CurrencyConverterCell: UITableViewCell {
     var textFieldHandler: ((String?) -> ())?
     var onSelectCurrencyTappedHandler: (() -> ())?
     
+    var textField = "" {
+        didSet {
+            if self.textField != oldValue {
+                self.textFieldHandler?(self.numberTextField.text)
+            }
+            
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle,
                   reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         
         self.currencyImageView.layer.cornerRadius = 25
         self.currencyImageView.clipsToBounds = true
@@ -49,6 +57,8 @@ final class CurrencyConverterCell: UITableViewCell {
             self.charCodeLabel.widthAnchor.constraint(equalToConstant: 70)
         ])
         
+        self.numberTextField.textAlignment = .right
+        
         self.addSubview(self.numberTextField)
         self.numberTextField.translatesAutoresizingMaskIntoConstraints = false
         
@@ -69,7 +79,9 @@ final class CurrencyConverterCell: UITableViewCell {
         
         self.configAppearance()
         
+        self.currencyImageView.contentMode = .scaleAspectFill
         
+        self.numberTextField.becomeFirstResponder()
     }
     
     required init?(coder: NSCoder) {
@@ -78,20 +90,23 @@ final class CurrencyConverterCell: UITableViewCell {
     
     @objc func tap() {
         self.onSelectCurrencyTappedHandler?()
-        print("tap")
     }
 }
 
 extension CurrencyConverterCell {
     
-    func setViewModel(_ model: UIColor) {
-        self.currencyImageView.backgroundColor = model
-        self.charCodeLabel.text = "RUB"
+    func setViewModel(_ model: CurrencyConverterViewModel?) {
+        if let model = model {
+            self.charCodeLabel.text = model.charCode
+            self.currencyImageView.image = UIImage(named: model.charCode)
+        } else {
+            self.currencyImageView.image = UIImage(systemName: "flag.slash.fill")
+        }
     }
     
     func setTextFieldValue(_ value: String) {
         self.numberTextField.text = value
-        print(#function)
+        self.textField = value
     }
 }
 
@@ -111,7 +126,7 @@ private extension CurrencyConverterCell {
     }
     
     func configTextField() {
-        self.numberTextField.placeholder = "textField.placeholder"
+        self.numberTextField.placeholder = "Tap"
         self.numberTextField.keyboardType = .numberPad
         self.numberTextField.addTarget(self,
                                  action: #selector

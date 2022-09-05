@@ -57,6 +57,7 @@ class RequestSender: IRequestSender {
             
             if let data = data,
                let parseModel: [Parser.Model] = config.parser?.parse(data: data) {
+                print(parseModel.first)
                 completionHandler(.success((parseModel, nil, nil)))
             } else {
                 completionHandler(.failure(.parseError))

@@ -24,8 +24,6 @@ final class ListCurrenciesCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
         
-        
-        
         self.flagImageView.clipsToBounds = true
         self.flagImageView.layer.borderWidth = 1
         self.flagImageView.layer.borderColor = UIColor.red.cgColor
@@ -75,8 +73,6 @@ final class ListCurrenciesCell: UITableViewCell {
                                                 action: #selector(self.tapped))
         self.favoriteImageView.addGestureRecognizer(tapGesture)
         self.favoriteImageView.isUserInteractionEnabled = true
-        
-        
     }
     
     @objc func tapped() {

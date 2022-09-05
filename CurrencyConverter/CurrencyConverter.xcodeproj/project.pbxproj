@@ -39,6 +39,7 @@
 		84DC684728C1AB8C006BCEB0 /* CurrencySelectionAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC684628C1AB8C006BCEB0 /* CurrencySelectionAssembly.swift */; };
 		84DC684928C1B111006BCEB0 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC684828C1B111006BCEB0 /* CurrencySelectionCell.swift */; };
 		84DC684B28C1B2E0006BCEB0 /* CurrencyConverterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC684A28C1B2E0006BCEB0 /* CurrencyConverterRouter.swift */; };
+		84DC684D28C5B1C9006BCEB0 /* CurrencyConverterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC684C28C5B1C9006BCEB0 /* CurrencyConverterViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +77,7 @@
 		84DC684628C1AB8C006BCEB0 /* CurrencySelectionAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionAssembly.swift; sourceTree = "<group>"; };
 		84DC684828C1B111006BCEB0 /* CurrencySelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionCell.swift; sourceTree = "<group>"; };
 		84DC684A28C1B2E0006BCEB0 /* CurrencyConverterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterRouter.swift; sourceTree = "<group>"; };
+		84DC684C28C5B1C9006BCEB0 /* CurrencyConverterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				84DC681228BDD18F006BCEB0 /* CurrencyConverterViewController.swift */,
+				84DC684C28C5B1C9006BCEB0 /* CurrencyConverterViewModel.swift */,
 				84DC682428BE56C3006BCEB0 /* CurrencyConverterCell.swift */,
 				84DC682028BE3052006BCEB0 /* CurrencyConverterPresenter.swift */,
 				84DC684A28C1B2E0006BCEB0 /* CurrencyConverterRouter.swift */,
@@ -295,6 +298,7 @@
 				84DC684928C1B111006BCEB0 /* CurrencySelectionCell.swift in Sources */,
 				84DC683028BF6923006BCEB0 /* CRBParser.swift in Sources */,
 				84DC683F28C0BE4C006BCEB0 /* CurrencyEntity+CoreDataClass.swift in Sources */,
+				84DC684D28C5B1C9006BCEB0 /* CurrencyConverterViewModel.swift in Sources */,
 				84DC683728C0BAE7006BCEB0 /* CoreDataStorage.swift in Sources */,
 				84DC682828BF68A9006BCEB0 /* NetworkError.swift in Sources */,
 				84DC684728C1AB8C006BCEB0 /* CurrencySelectionAssembly.swift in Sources */,

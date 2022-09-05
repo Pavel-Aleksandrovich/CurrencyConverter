@@ -13,7 +13,8 @@ enum CurrencyType: Int, CaseIterable {
 }
 
 protocol ICurrencyConverterViewController: AnyObject {
-    var onSelectCurrencyTappedHandler: (() -> ())? { get set }
+    var currencyTextFieldDidChangeHandler: ((Int, _ text: String?) -> ())? { get set }
+    var onSelectCurrencyTappedHandler: ((Int) -> ())? { get set }
     func reloadData()
 }
 
@@ -22,7 +23,8 @@ final class CurrencyConverterViewController: UIViewController {
     private let presenter: ICurrencyConverterPresenter
     private let tableView = UITableView()
     
-    var onSelectCurrencyTappedHandler: (() -> ())?
+    var currencyTextFieldDidChangeHandler: ((Int, _ text: String?) -> ())?
+    var onSelectCurrencyTappedHandler: ((Int) -> ())?
     
     init(presenter: ICurrencyConverterPresenter) {
         self.presenter = presenter
@@ -81,40 +83,20 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
                                                        for: indexPath) as? CurrencyConverterCell
         else { return UITableViewCell() }
         
-        switch self.presenter.getCurrencyTypeByIndex(indexPath.row) {
-        case .first:
-            cell.setViewModel(.red)
-            
-            cell.textFieldHandler = { [ weak self ] number in
-                self?.presenter.firstCurrencyDidChange(value: number)
-            }
-        case .second:
-            cell.setViewModel(.blue)
-            let value = self.presenter.getTextFieldValue()
-            cell.setTextFieldValue(value)
-            cell.textFieldHandler = { number in
-                
-                print(number)
-            }
+        let value = self.presenter.foo(index: indexPath.row)
+        cell.setTextFieldValue(value)
+        
+        let model = self.presenter.getCurrencyModelByIndex(indexPath.row)
+        cell.setViewModel(model)
+        
+        cell.textFieldHandler = { text in
+            self.currencyTextFieldDidChangeHandler?(indexPath.row, text)
         }
         
-        
         cell.onSelectCurrencyTappedHandler = {
-            self.onSelectCurrencyTappedHandler?()
-            print(indexPath.row)
+            self.onSelectCurrencyTappedHandler?(indexPath.row)
         }
         
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        switch self.presenter.getCurrencyTypeByIndex(indexPath.row) {
-        case .first:
-            print("first")
-        case .second:
-            print("second")
-        }
     }
 }

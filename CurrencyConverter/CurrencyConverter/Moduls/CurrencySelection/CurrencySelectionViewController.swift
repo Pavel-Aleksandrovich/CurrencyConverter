@@ -8,6 +8,7 @@
 import UIKit
 
 protocol ICurrencySelectionViewController: AnyObject {
+    var onCellTappedHandler: ((ResponseCurrencyModel) -> ())? { get set }
     func reloadData()
 }
 
@@ -16,7 +17,7 @@ final class CurrencySelectionViewController: UIViewController {
     private let presenter: ICurrencySelectionPresenter
     private let tableView = UITableView()
     
-    var onFavoriteButtonTappedHandler: ((RequestFavoriteCurrencyModel) -> ())?
+    var onCellTappedHandler: ((ResponseCurrencyModel) -> ())?
     
     init(presenter: ICurrencySelectionPresenter) {
         self.presenter = presenter
@@ -94,6 +95,8 @@ extension CurrencySelectionViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.row)
+        tableView.deselectRow(at: indexPath, animated: true)
+        let model = self.presenter.getModelByIndex(indexPath.row)
+        self.onCellTappedHandler?(model)
     }
 }
