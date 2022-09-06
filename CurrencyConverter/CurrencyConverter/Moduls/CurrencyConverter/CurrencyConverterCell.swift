@@ -7,11 +7,14 @@
 
 import UIKit
 
+enum Fonts: String {
+    case bold = "HelveticaNeue-Bold"
+}
 final class CurrencyConverterCell: UITableViewCell {
     
     static let id = String(describing: CurrencyConverterCell.self)
     
-    private let numberTextField = UILabel()
+    private let numberLabel = UILabel()
     private let currencyImageView = UIImageView()
     private let charCodeLabel = UILabel()
     var textFieldHandler: ((String?) -> ())?
@@ -20,9 +23,8 @@ final class CurrencyConverterCell: UITableViewCell {
     var textField = "" {
         didSet {
             if self.textField != oldValue {
-                self.textFieldHandler?(self.numberTextField.text)
+//                self.textFieldHandler?(self.numberLabel.text)
             }
-            
         }
     }
     
@@ -30,43 +32,46 @@ final class CurrencyConverterCell: UITableViewCell {
                   reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.currencyImageView.layer.cornerRadius = 25
+        self.currencyImageView.layer.cornerRadius = 30
         self.currencyImageView.clipsToBounds = true
         self.currencyImageView.layer.borderWidth = 1
-        self.currencyImageView.layer.borderColor = UIColor.red.cgColor
+        self.currencyImageView.layer.borderColor = UIColor.darkGray.cgColor
         self.currencyImageView.contentMode = .scaleAspectFill
         
         self.contentView.addSubview(self.currencyImageView)
         self.currencyImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.currencyImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            self.currencyImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             self.currencyImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            self.currencyImageView.heightAnchor.constraint(equalToConstant: 50),
-            self.currencyImageView.widthAnchor.constraint(equalToConstant: 50 )
+            self.currencyImageView.heightAnchor.constraint(equalToConstant: 60),
+            self.currencyImageView.widthAnchor.constraint(equalToConstant: 60 )
         ])
         
         self.charCodeLabel.textAlignment = .center
+        self.charCodeLabel.font = UIFont(name: Fonts.bold.rawValue, size: 18)
+        self.charCodeLabel.textColor = .systemGray
         
         self.addSubview(self.charCodeLabel)
         self.charCodeLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             self.charCodeLabel.centerXAnchor.constraint(equalTo: self.currencyImageView.centerXAnchor),
-            self.charCodeLabel.topAnchor.constraint(equalTo: self.currencyImageView.bottomAnchor, constant: 5),
+            self.charCodeLabel.topAnchor.constraint(equalTo: self.currencyImageView.bottomAnchor, constant: 2),
             self.charCodeLabel.widthAnchor.constraint(equalToConstant: 70)
         ])
         
-        self.numberTextField.textAlignment = .right
+        self.numberLabel.textAlignment = .right
+        self.numberLabel.textColor = .darkGray
         
-        self.addSubview(self.numberTextField)
-        self.numberTextField.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.numberLabel)
+        self.numberLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.numberTextField.leadingAnchor.constraint(equalTo: self.currencyImageView.trailingAnchor, constant: 10),
-            self.numberTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.numberTextField.topAnchor.constraint(equalTo: self.topAnchor),
-            self.numberTextField.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.numberLabel.leadingAnchor.constraint(equalTo: self.currencyImageView.trailingAnchor, constant: 5),
+            self.numberLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
+            self.numberLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            self.numberLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
         ])
         
         self.currencyImageView.isUserInteractionEnabled = true
@@ -103,41 +108,21 @@ extension CurrencyConverterCell {
     }
     
     func setTextFieldValue(_ value: String) {
-        self.numberTextField.text = value
+        self.numberLabel.text = value
         self.textField = value
+        
+        self.numberLabel.font = UIFont.boldSystemFont(ofSize: 55)
+        
+        if numberLabel.frame.width < numberLabel.intrinsicContentSize.width {
+            self.numberLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        }
     }
 }
 
 private extension CurrencyConverterCell {
     
     func configAppearance() {
-        self.configTextField()
-//        self.configTapGesture()
     }
     
-    func configTapGesture() {
-        let tapGesture = UITapGestureRecognizer()
-        self.addGestureRecognizer(tapGesture)
-        tapGesture.addTarget(self,
-                             action: #selector
-                             (self.textFieldDidChange))
-    }
-    
-    func configTextField() {
-//        self.numberTextField.placeholder = "Tap"
-//        self.numberTextField.inputView = UIView()
-//        self.numberTextField.addTarget(self,
-//                                 action: #selector
-//                                 (self.textFieldEditingChanged),
-//                                 for: .editingChanged)
-    }
-    
-    @objc func textFieldEditingChanged() {
-        self.textFieldHandler?(self.numberTextField.text)
-    }
-    
-    @objc func textFieldDidChange() {
-        self.numberTextField.becomeFirstResponder()
-    }
 }
 

@@ -19,6 +19,12 @@ final class ListCurrenciesPresenter {
     private weak var controller: IListCurrenciesViewController?
     private var array: [ResponseCurrencyModel] = []
     
+    var type: TypeCurrencies = .list {
+        didSet {
+            self.loadCurrencies()
+        }
+    }
+    
     init(interactor: IListCurrenciesInteractor) {
         self.interactor = interactor
     }
@@ -28,24 +34,11 @@ extension ListCurrenciesPresenter: IListCurrenciesPresenter {
     
     func onViewAttached(controller: IListCurrenciesViewController) {
         self.controller = controller
+        self.loadListCurrenciesAndSave()
         
-        self.interactor.loadData { result in
-            switch result {
-            case .success(let model):
-                DispatchQueue.main.async {
-                    let request = model.map( { RequestCurrencyModel(model: $0)})
-                    
-                    request.forEach { model in
-                        try? self.interactor.createCurrency(model: model)
-                    }
-                    
-                    self.array = try! self.interactor.getListCurrencies()
-                    
-                    self.controller?.reloadData()
-                }
-            case .failure(let error):
-                print(error)
-            }
+        
+        self.controller?.onCollectionCellTappedHandler = { index in
+            self.type = TypeCurrencies.allCases[index]
         }
         
         self.setOnFavoriteButtonTappedHandler()
@@ -58,6 +51,46 @@ extension ListCurrenciesPresenter: IListCurrenciesPresenter {
     func getModelByIndex(_ index: Int) -> ResponseCurrencyModel {
         self.array[index]
     }
+    
+    func loadListCurrenciesAndSave() {
+        self.interactor.loadData { result in
+            switch result {
+            case .success(let model):
+                DispatchQueue.main.async {
+                    let request = model.map( { RequestCurrencyModel(model: $0)})
+                    
+                    request.forEach { model in
+                        try? self.interactor.createCurrency(model: model)
+                    }
+                    
+                    self.loadListCurrencies()
+                    
+                    self.controller?.reloadData()
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func loadListCurrencies() {
+        self.array = try! self.interactor.getListCurrencies()
+    }
+    
+    func loadFavoriteCurrencies() {
+        self.array = try! self.interactor.getFavoriteCurrencies()
+    }
+    
+    func loadCurrencies() {
+        switch self.type {
+        case .list:
+            self.loadListCurrencies()
+        case .favorite:
+            self.loadFavoriteCurrencies()
+        }
+        
+        self.controller?.reloadData()
+    }
 }
 
 private extension ListCurrenciesPresenter {
@@ -67,11 +100,7 @@ private extension ListCurrenciesPresenter {
             guard let self = self else { return }
             try? self.interactor.updateCurrency(model: model)
             
-            self.array = try! self.interactor.getListCurrencies()
-            
-            self.controller?.reloadData()
-            
-            print(try? self.interactor.getFavoriteCurrencies().count)
+            self.loadCurrencies()
         }
     }
 }

@@ -16,18 +16,27 @@ enum CalculatorType: String, CaseIterable {
     case one = "1"
     case o2ne = "2"
     case o3ne = "3"
-    case o4ne = "4"
-    case o5ne = "5"
-    case o6ne = "6"
-    case o7ne = "7"
-    case o8ne = "8"
-    case o9ne = "9"
-    case o10ne = "10"
-    case o11ne = "11"
-    case o12ne = "12"
-    case o13ne = "13"
-    case o14ne = "14"
-    case o15ne = "15"
+    case o4ne = "←"
+    case o5ne = "4"
+    case o6ne = "5"
+    case o7ne = "6"
+    case o8ne = "↑↓"
+    case o9ne = "7"
+    case o10ne = "8"
+    case o11ne = "9"
+    case o12ne = "C"
+    case o13ne = "0"
+    case o14ne = ","
+    
+    var color: UIColor {
+        switch self {
+        case .o4ne: return UIColor.orange
+        case .o8ne: return UIColor.orange
+        case .o12ne: return UIColor.orange
+        case .o14ne: return UIColor.orange
+        default : return UIColor.systemGray
+        }
+    }
 }
 
 protocol ICurrencyConverterViewController: AnyObject {
@@ -66,28 +75,19 @@ final class CurrencyConverterViewController: UIViewController {
         
         self.view.backgroundColor = .white
         
+        self.tableView.backgroundColor = .darkGray
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(CurrencyConverterCell.self,
                                 forCellReuseIdentifier: CurrencyConverterCell.id)
         
-        self.view.addSubview(self.tableView)
-        self.tableView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.tableView.heightAnchor.constraint(equalToConstant: 180),
-        ])
         
         self.view.addSubview(self.collectionView)
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         self.layout.minimumInteritemSpacing = 1
         self.layout.minimumLineSpacing = 1
-//        self.layout.scrollDirection =
-    
     
         self.collectionView.backgroundColor = .clear
         self.collectionView.showsHorizontalScrollIndicator = false
@@ -99,8 +99,20 @@ final class CurrencyConverterViewController: UIViewController {
         NSLayoutConstraint.activate([
             self.collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.collectionView.topAnchor.constraint(equalTo: self.tableView.bottomAnchor),
+//            self.collectionView.topAnchor.constraint(equalTo: self.tableView.bottomAnchor),
+            self.collectionView.heightAnchor.constraint(equalToConstant: self.view.frame.width),
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+        
+        self.view.addSubview(self.tableView)
+        self.tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.tableView.bottomAnchor.constraint(equalTo: self.collectionView.topAnchor)
+//            self.tableView.heightAnchor.constraint(equalToConstant: 180),
         ])
     }
 }
@@ -116,7 +128,7 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
-        90
+        tableView.frame.height/2
     }
     
     func tableView(_ tableView: UITableView,
@@ -151,7 +163,6 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         self.onCellTappedHandler?(indexPath.row)
-        print(indexPath.row)
     }
 }
 
@@ -160,10 +171,11 @@ extension CurrencyConverterViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if CalculatorType.allCases[indexPath.item] == .o13ne {
+        if CalculatorType.allCases[indexPath.item] == .o13ne || CalculatorType.allCases[indexPath.item] == .o14ne {
             return CGSize(width: collectionView.frame.width/2 - 1,
                           height: collectionView.frame.height/4 - 1)
         }
+        
         return CGSize(width: collectionView.frame.width/4 - 1,
                       height: collectionView.frame.height/4 - 1)
     }
@@ -192,6 +204,8 @@ extension CurrencyConverterViewController: UICollectionViewDataSource {
             for: indexPath) as? CalculatorCollectionCell
         else { return UICollectionViewCell() }
         
+        let type = CalculatorType.allCases[indexPath.row]
+        cell.setData(type)
         return cell
     }
 }

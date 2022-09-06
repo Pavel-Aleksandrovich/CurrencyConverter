@@ -22,11 +22,14 @@ final class CurrencySelectionPresenter {
     private weak var controller: ICurrencySelectionViewController?
     private weak var delegate: CurrencySelectionPresenterDelegate?
     private let storageService: ICoreDataStorage
+    private let router: ICurrencySelectionRouter
     private var array: [ResponseCurrencyModel] = []
     
     init(storageService: ICoreDataStorage,
+         router: ICurrencySelectionRouter,
          delegate: CurrencyConverterPresenter) {
         self.storageService = storageService
+        self.router = router
         self.delegate = delegate
     }
 }
@@ -38,8 +41,9 @@ extension CurrencySelectionPresenter: ICurrencySelectionPresenter {
         
         self.array = try! self.storageService.getListCurrencies()
         
-        self.controller?.onCellTappedHandler = { model in
-            self.delegate?.didSelectModel(model)
+        self.controller?.onCellTappedHandler = { [ weak self ] model in
+            self?.delegate?.didSelectModel(model)
+            self?.router.popViewController()
         }
     }
     

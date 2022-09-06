@@ -27,9 +27,9 @@ final class CurrencyConverterPresenter {
     
     private var index = Int()
     
-    var indexTable = 0
+    var didSelectCellAtIndex = 0
     
-    var val: String = ""
+    var firstCurrencyEnteredValue: String = ""
     
     var secondCurrencyEnteredValue = ""
     
@@ -59,6 +59,10 @@ extension CurrencyConverterPresenter: ICurrencyConverterPresenter {
     func onViewAttached(controller: ICurrencyConverterViewController) {
         self.controller = controller
         
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 8
+        formatter.currencyDecimalSeparator = ","
+        
         self.controller?.onSelectCurrencyTappedHandler = { [ weak self ] index in
             guard let self = self else { return }
             self.index = index
@@ -68,7 +72,7 @@ extension CurrencyConverterPresenter: ICurrencyConverterPresenter {
         self.controller?.currencyTextFieldDidChangeHandler = { index, text in
             switch self.getCurrencyTypeByIndex(index) {
             case .first:
-                self.val = text ?? ""
+                self.firstCurrencyEnteredValue = text ?? ""
             case .second:
                 self.secondCurrencyEnteredValue = text ?? ""
             }
@@ -77,20 +81,57 @@ extension CurrencyConverterPresenter: ICurrencyConverterPresenter {
         }
         
         self.controller?.onCalculatorCellTappedHandler = { index in
-            let value = CalculatorType.allCases[index].rawValue
+            let type = CalculatorType.allCases[index]
             
-            switch self.getCurrencyTypeByIndex(self.indexTable) {
+            switch self.getCurrencyTypeByIndex(self.didSelectCellAtIndex) {
             case .first:
-                self.val += value
+                switch type {
+                case .o4ne:
+                    if self.firstCurrencyEnteredValue.isEmpty == false {
+                        self.firstCurrencyEnteredValue.removeLast()
+                    }
+                case .o8ne:
+                    self.rotationCurrencies()
+                case .o12ne:
+                    self.firstCurrencyEnteredValue = ""
+                case .o14ne:
+                    if self.firstCurrencyEnteredValue.contains(type.rawValue) == false {
+                        self.firstCurrencyEnteredValue += type.rawValue
+                    }
+                default :
+                    if self.firstCurrencyEnteredValue == "0" {
+                        self.firstCurrencyEnteredValue.removeFirst()
+                    }
+                    self.firstCurrencyEnteredValue += type.rawValue
+                }
             case .second:
-                self.secondCurrencyEnteredValue += value
+                switch type {
+                case .o4ne:
+                    if self.secondCurrencyEnteredValue.isEmpty == false {
+                        self.secondCurrencyEnteredValue.removeLast()
+                    }
+                case .o8ne:
+                    self.rotationCurrencies()
+                case .o12ne:
+                    self.secondCurrencyEnteredValue = ""
+                case .o14ne:
+                    if self.secondCurrencyEnteredValue.contains(type.rawValue) == false {
+                        self.secondCurrencyEnteredValue += type.rawValue
+                    }
+                default :
+                    if self.secondCurrencyEnteredValue == "0" {
+                        self.secondCurrencyEnteredValue.removeFirst()
+                    }
+                    self.secondCurrencyEnteredValue += type.rawValue
+                }
+                
             }
             
             self.controller?.reloadData()
         }
         
         self.controller?.onCellTappedHandler = { index in
-            self.indexTable = index
+            self.didSelectCellAtIndex = index
         }
     }
     
@@ -119,6 +160,14 @@ extension CurrencyConverterPresenter: ICurrencyConverterPresenter {
 
 private extension CurrencyConverterPresenter {
     
+    func rotationCurrencies() {
+        guard let first = self.firstCurrency,
+              let second = self.secondCurrency else { return }
+        
+        self.secondCurrency = first
+        self.firstCurrency = second
+    }
+    
     func getCurrencyTypeByIndex(_ index: Int) -> CurrencyType {
         CurrencyType.allCases[index]
     }
@@ -126,15 +175,19 @@ private extension CurrencyConverterPresenter {
     func getFirstTextFieldValue() -> String {
         guard let firstCurrency = self.firstCurrency,
               let secondCurrency = self.secondCurrency,
-              let value = Double(self.secondCurrencyEnteredValue) else { return self.val }
+              let value = Double(self.secondCurrencyEnteredValue) else { return self.firstCurrencyEnteredValue }
         
-        return "\(value / Double(secondCurrency.valueRub)! * Double(firstCurrency.valueRub)!)"
+        let result = value / Double(secondCurrency.valueRub)! * Double(firstCurrency.valueRub)!
+        
+        let res = self.formatter.string(from: NSNumber(value: result))!
+        
+        return res
     }
     
     func getSecondTextFieldValue() -> String {
         guard let firstCurrency = self.firstCurrency,
               let secondCurrency = self.secondCurrency,
-              let value = Double(self.val) else { return self.secondCurrencyEnteredValue }
+              let value = Double(self.firstCurrencyEnteredValue) else { return self.secondCurrencyEnteredValue }
         
         return "\(value * Double(secondCurrency.valueRub)! / Double(firstCurrency.valueRub)!)"
     }

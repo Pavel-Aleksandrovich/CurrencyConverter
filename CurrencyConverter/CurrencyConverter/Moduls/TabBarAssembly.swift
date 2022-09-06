@@ -12,8 +12,9 @@ final class TabBarAssembly: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.viewControllers = [self.createListCurrenciesViewController(),
-                                self.createCurrencyConverterViewController(),
-                                self.createFavoriteCurrenciesViewController()]
+                                self.createCurrencyConverterViewController()]
+        
+        self.tabBar.tintColor = .black
     }
 }
 
@@ -35,16 +36,6 @@ private extension TabBarAssembly {
         vc.tabBarItem = UITabBarItem(title: "Converter",
                                      image: image,
                                      tag: 1)
-        
-        return UINavigationController(rootViewController: vc)
-    }
-    
-    func createFavoriteCurrenciesViewController() -> UIViewController {
-        let vc = FavoriteCurrenciesViewController()
-        let image = UIImage(systemName: "heart")
-        vc.tabBarItem = UITabBarItem(title: "Favorite",
-                                     image: image,
-                                     tag: 3)
         
         return UINavigationController(rootViewController: vc)
     }
