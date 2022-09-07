@@ -22,7 +22,7 @@ final class CalculatorCollectionCell: UICollectionViewCell {
         self.backgroundColor = .magenta
         
         self.numberLabel.textAlignment = .center
-        self.numberLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        self.numberLabel.font = UIFont.boldSystemFont(ofSize: 35)
         self.numberLabel.textColor = .white
         
         self.addSubview(self.numberLabel)

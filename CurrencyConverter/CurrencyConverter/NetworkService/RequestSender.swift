@@ -10,7 +10,7 @@ import Foundation
 protocol IRequestSender {
     func send<Parser>(
         config: RequestConfig<Parser>,
-        completionHandler: @escaping (Result<([Parser.Model], Data?, URLResponse?), NetworkError>) -> Void
+        completionHandler: @escaping (Result<[Parser.Model], NetworkError>) -> Void
     )
 }
 
@@ -23,8 +23,9 @@ class RequestSender: IRequestSender {
     
     func send<Parser>(
         config: RequestConfig<Parser>,
-        completionHandler: @escaping (Result<([Parser.Model], Data?, URLResponse?), NetworkError>) -> Void
+        completionHandler: @escaping (Result<[Parser.Model], NetworkError>) -> Void
     ) where Parser: IParser {
+        
         guard let urlRequest = config.request.urlRequest else {
             completionHandler(.failure(.invalidURL))
             return
@@ -32,33 +33,31 @@ class RequestSender: IRequestSender {
         
         let session = URLSession.shared
         let task = session.dataTask(with: urlRequest) { data, response, error in
-            if let error = error {
-                Logger.error(error.localizedDescription)
+            if error != nil {
                 completionHandler(.failure(.networkError))
                 return
             }
             
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
-                completionHandler(.failure(.statusCodeError))
-                return
-            }
-            
-            if !(200..<300).contains(statusCode) {
-                switch statusCode {
-                case 400:
-                    completionHandler(.failure(.requestError))
-                case 500...:
-                    completionHandler(.failure(.serverError))
-                default:
-                    Logger.warning(statusCode.description)
-                    completionHandler(.failure(.unownedError))
-                }
-            }
+//            guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
+//                completionHandler(.failure(.statusCodeError))
+//                return
+//            }
+//
+//            if !(200..<300).contains(statusCode) {
+//                switch statusCode {
+//                case 400:
+//                    completionHandler(.failure(.requestError))
+//                case 500...:
+//                    completionHandler(.failure(.serverError))
+//                default:
+//                    Logger.warning(statusCode.description)
+//                    completionHandler(.failure(.unownedError))
+//                }
+//            }
             
             if let data = data,
                let parseModel: [Parser.Model] = config.parser?.parse(data: data) {
-                print(parseModel.first)
-                completionHandler(.success((parseModel, nil, nil)))
+                completionHandler(.success(parseModel))
             } else {
                 completionHandler(.failure(.parseError))
             }

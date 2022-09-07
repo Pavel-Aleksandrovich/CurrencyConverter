@@ -18,12 +18,7 @@ final class ListCurrenciesPresenter {
     private let interactor: IListCurrenciesInteractor
     private weak var controller: IListCurrenciesViewController?
     private var array: [ResponseCurrencyModel] = []
-    
-    var type: TypeCurrencies = .list {
-        didSet {
-            self.loadCurrencies()
-        }
-    }
+    private var type: TypeCurrencies = .list
     
     init(interactor: IListCurrenciesInteractor) {
         self.interactor = interactor
@@ -34,13 +29,9 @@ extension ListCurrenciesPresenter: IListCurrenciesPresenter {
     
     func onViewAttached(controller: IListCurrenciesViewController) {
         self.controller = controller
-        self.loadListCurrenciesAndSave()
         
-        
-        self.controller?.onCollectionCellTappedHandler = { index in
-            self.type = TypeCurrencies.allCases[index]
-        }
-        
+        self.loadCurrenciesFromNetwork()
+        self.setOnCollectionCellTappedHandler()
         self.setOnFavoriteButtonTappedHandler()
     }
     
@@ -51,34 +42,54 @@ extension ListCurrenciesPresenter: IListCurrenciesPresenter {
     func getModelByIndex(_ index: Int) -> ResponseCurrencyModel {
         self.array[index]
     }
+}
+
+private extension ListCurrenciesPresenter {
     
-    func loadListCurrenciesAndSave() {
-        self.interactor.loadData { result in
+    func setOnCollectionCellTappedHandler() {
+        self.controller?.onCollectionCellTappedHandler = { index in
+            self.type = TypeCurrencies.allCases[index]
+            self.loadCurrencies()
+        }
+    }
+    
+    func setOnFavoriteButtonTappedHandler() {
+        self.controller?.onFavoriteButtonTappedHandler = { [ weak self ] model in
+            guard let self = self else { return }
+            
+            self.updateCurrency(model: model)
+            self.loadCurrencies()
+        }
+    }
+    
+    func loadCurrenciesFromNetwork() {
+        self.interactor.loadCurrenciesFromNetwork { result in
             switch result {
-            case .success(let model):
+            case .success(let array):
                 DispatchQueue.main.async {
-                    let request = model.map( { RequestCurrencyModel(model: $0)})
-                    
-                    request.forEach { model in
-                        try? self.interactor.createCurrency(model: model)
-                    }
-                    
-                    self.loadListCurrencies()
-                    
-                    self.controller?.reloadData()
+                    self.saveCurrencies(array: array)
+                    self.loadCurrencies()
                 }
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
     
-    func loadListCurrencies() {
-        self.array = try! self.interactor.getListCurrencies()
+    func saveCurrencies(array: [CRBApiModel]) {
+        let request = array.map { RequestCurrencyModel(model: $0)}
+        
+        request.forEach { model in
+            self.interactor.createCurrency(model: model) { error in
+                print(error.localizedDescription)
+            }
+        }
     }
     
-    func loadFavoriteCurrencies() {
-        self.array = try! self.interactor.getFavoriteCurrencies()
+    func updateCurrency(model: RequestFavoriteCurrencyModel) {
+        self.interactor.updateCurrency(model: model) { error in
+            print(error.localizedDescription)
+        }
     }
     
     func loadCurrencies() {
@@ -91,16 +102,26 @@ extension ListCurrenciesPresenter: IListCurrenciesPresenter {
         
         self.controller?.reloadData()
     }
-}
-
-private extension ListCurrenciesPresenter {
     
-    func setOnFavoriteButtonTappedHandler() {
-        self.controller?.onFavoriteButtonTappedHandler = { [ weak self ] model in
-            guard let self = self else { return }
-            try? self.interactor.updateCurrency(model: model)
-            
-            self.loadCurrencies()
+    func loadListCurrencies() {
+        self.interactor.getListCurrencies { [ weak self ] result in
+            switch result {
+            case .success(let array):
+                self?.array = array
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func loadFavoriteCurrencies() {
+        self.interactor.getFavoriteCurrencies { [ weak self ] result in
+            switch result {
+            case .success(let array):
+                self?.array = array
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
 }

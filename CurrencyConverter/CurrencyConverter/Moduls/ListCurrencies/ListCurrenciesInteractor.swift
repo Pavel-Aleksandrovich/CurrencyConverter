@@ -8,11 +8,15 @@
 import Foundation
 
 protocol IListCurrenciesInteractor: AnyObject {
-    func loadData(completion: @escaping(Result<[CRBApiModel], Error>) -> ())
-    func createCurrency(model: RequestCurrencyModel) throws
-    func getListCurrencies() throws -> [ResponseCurrencyModel]
-    func updateCurrency(model: RequestFavoriteCurrencyModel) throws
-    func getFavoriteCurrencies() throws -> [ResponseCurrencyModel]
+    func loadCurrenciesFromNetwork(completion: @escaping(Result<[CRBApiModel], NetworkError>) -> ())
+    func createCurrency(model: RequestCurrencyModel,
+                        completion: @escaping((Error) -> ()))
+    func getListCurrencies(completion: @escaping((Result<[ResponseCurrencyModel],
+                                                  Error>) -> ()))
+    func updateCurrency(model: RequestFavoriteCurrencyModel,
+                        completion: @escaping((Error) -> ()))
+    func getFavoriteCurrencies(completion: @escaping((Result<[ResponseCurrencyModel],
+                                                      Error>) -> ()))
 }
 
 final class ListCurrenciesInteractor {
@@ -28,33 +32,47 @@ final class ListCurrenciesInteractor {
 
 extension ListCurrenciesInteractor: IListCurrenciesInteractor {
     
-    func loadData(completion: @escaping(Result<[CRBApiModel], Error>) -> ()) {
+    func loadCurrenciesFromNetwork(completion: @escaping(Result<[CRBApiModel], NetworkError>) -> ()) {
         let requestConfig = RequestFactory.CBRCurrencyRequest.modelConfig()
         
-        self.networkService.send(config: requestConfig) { [weak self] result in
-            switch result {
-            case .success(let (models, _, _)):
-                completion(.success(models))
-            case .failure(let error):
-                Logger.error(error.rawValue)
-            }
+        self.networkService.send(config: requestConfig, completionHandler: completion)
+    }
+    
+    func createCurrency(model: RequestCurrencyModel,
+                        completion: @escaping((Error) -> ())) {
+        do {
+            try self.storageService.createCurrency(model: model)
+        } catch {
+            completion(error)
         }
     }
     
-    func createCurrency(model: RequestCurrencyModel) throws {
-       
-       try self.storageService.createCurrency(model: model)
+    func getListCurrencies(completion: @escaping((Result<[ResponseCurrencyModel],
+                                                  Error>) -> ())) {
+        do {
+           let success = try self.storageService.getListCurrencies()
+            completion(.success(success))
+        } catch {
+            completion(.failure(error))
+        }
     }
     
-    func getListCurrencies() throws -> [ResponseCurrencyModel] {
-        try self.storageService.getListCurrencies()
+    func updateCurrency(model: RequestFavoriteCurrencyModel,
+                        completion: @escaping((Error) -> ())) {
+        do {
+            try self.storageService.updateCurrency(model: model)
+        } catch {
+            completion(error)
+        }
     }
     
-    func updateCurrency(model: RequestFavoriteCurrencyModel) throws {
-        try self.storageService.updateCurrency(model: model)
-    }
-    
-    func getFavoriteCurrencies() throws -> [ResponseCurrencyModel] {
-        try self.storageService.getFavoriteCurrencies()
+    func getFavoriteCurrencies(completion: @escaping((Result<[ResponseCurrencyModel],
+                                                      Error>) -> ())) {
+        do {
+           let success = try self.storageService.getFavoriteCurrencies()
+            completion(.success(success))
+        } catch {
+            completion(.failure(error))
+        }
     }
 }

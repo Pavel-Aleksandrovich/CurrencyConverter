@@ -38,8 +38,8 @@ final class CurrencySelectionViewController: UIViewController {
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.register(CurrencySelectionCell.self,
-                                        forCellReuseIdentifier: CurrencySelectionCell.id)
+        self.tableView.register(ListCurrenciesCell.self,
+                                        forCellReuseIdentifier: ListCurrenciesCell.id)
         
         self.view.addSubview(self.tableView)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -73,7 +73,7 @@ extension CurrencySelectionViewController: ICurrencySelectionViewController {
 extension CurrencySelectionViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        50
+        60
     }
     
     func tableView(_ tableView: UITableView,
@@ -83,11 +83,12 @@ extension CurrencySelectionViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CurrencySelectionCell.id,
-                                                       for: indexPath) as? CurrencySelectionCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCurrenciesCell.id,
+                                                       for: indexPath) as? ListCurrenciesCell
         else { return UITableViewCell() }
         
         let model = self.presenter.getModelByIndex(indexPath.row)
+        cell.favoriteImageView.isHidden = true
         cell.setViewModel(model)
         
         return cell

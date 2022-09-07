@@ -17,7 +17,7 @@ protocol ICoreDataStorage: AnyObject {
 
 final class CoreDataStorage {
     
-    private lazy var context: NSManagedObjectContext = persistentContainer.viewContext
+    private lazy var context: NSManagedObjectContext = self.persistentContainer.viewContext
     
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "CurrencyConverter")
@@ -28,27 +28,10 @@ final class CoreDataStorage {
         })
         return container
     }()
+}
+
+extension CoreDataStorage: ICoreDataStorage {
     
-    func getListCurrencies() throws -> [ResponseCurrencyModel] {
-        let fetchRequest = CurrencyEntity.fetchRequest()
-        let currencies = try self.context.fetch(fetchRequest)
-        
-        return currencies.compactMap { ResponseCurrencyModel(model: $0) }
-    }
-    
-//    func delete(news: RequestFavoriteCurrencyModel) throws {
-//
-//        let fetchRequest = CurrencyEntity.fetchRequest()
-//        fetchRequest.predicate = NSPredicate(format: "id = %@",
-//                                             news.id.description)
-//
-//        let news = try self.context.fetch(fetchRequest)
-//        if let newsForDelete = news.first {
-//            context.delete(newsForDelete)
-//            self.saveContext()
-//        }
-//    }
-   
     func updateCurrency(model: RequestFavoriteCurrencyModel) throws {
         let fetchRequest = CurrencyEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@",
@@ -62,8 +45,14 @@ final class CoreDataStorage {
         }
     }
     
+    func getListCurrencies() throws -> [ResponseCurrencyModel] {
+        let fetchRequest = CurrencyEntity.fetchRequest()
+        let currencies = try self.context.fetch(fetchRequest)
+        
+        return currencies.compactMap { ResponseCurrencyModel(model: $0) }
+    }
+    
     func createCurrency(model: RequestCurrencyModel) throws {
-       
         guard let entity = NSEntityDescription.entity(forEntityName: "CurrencyEntity",
                                                       in: self.context)
         else { return }
@@ -73,7 +62,6 @@ final class CoreDataStorage {
         if savedCurrencies.contains(where: { $0.name == model.name}) == false {
             let currencyEntity = CurrencyEntity(entity: entity, insertInto: self.context)
             currencyEntity.setRequestModel(from: model)
-            
         }
         
         self.saveContext()
@@ -88,10 +76,6 @@ final class CoreDataStorage {
         
         return favoriteCurrencies.compactMap { ResponseCurrencyModel(model: $0) }
     }
-}
-
-extension CoreDataStorage: ICoreDataStorage {
-    
 }
 
 private extension CoreDataStorage {

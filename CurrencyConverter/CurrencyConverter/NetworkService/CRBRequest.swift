@@ -24,7 +24,7 @@ struct CRBRequest: IRequest {
         if let url = URL(string: stringURL) {
             urlRequest = URLRequest(url: url, timeoutInterval: 30)
         } else {
-            Logger.error("Неправильный URL")
+            print("Неправильный URL")
         }
         return urlRequest
     }

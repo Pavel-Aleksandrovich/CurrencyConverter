@@ -14,7 +14,7 @@ final class ListCurrenciesCell: UITableViewCell {
     private let currencyNameLabel = UILabel()
     private let charCodeLabel = UILabel()
     private let flagImageView = UIImageView()
-    private let favoriteImageView = UIImageView()
+    let favoriteImageView = UIImageView()
     
     var onFavoriteImageTappedHandler: (() -> ())?
     

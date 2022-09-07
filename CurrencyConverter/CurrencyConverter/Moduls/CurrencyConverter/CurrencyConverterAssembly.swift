@@ -13,8 +13,10 @@ enum CurrencyConverterAssembly {
         
         let storageService = CoreDataStorage()
         let router = CurrencyConverterRouter()
+        let converter = CurrencyConverter()
         let presenter = CurrencyConverterPresenter(storageService: storageService,
-                                                   router: router)
+                                                   router: router,
+                                                   converter: converter)
         let controller = CurrencyConverterViewController(presenter: presenter)
         router.controller = controller
         

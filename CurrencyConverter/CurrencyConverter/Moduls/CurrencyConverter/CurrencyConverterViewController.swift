@@ -41,7 +41,6 @@ enum CalculatorType: String, CaseIterable {
 
 protocol ICurrencyConverterViewController: AnyObject {
     var onCellTappedHandler: ((Int) -> ())? { get set }
-    var currencyTextFieldDidChangeHandler: ((Int, _ text: String?) -> ())? { get set }
     var onSelectCurrencyTappedHandler: ((Int) -> ())? { get set }
     var onCalculatorCellTappedHandler: ((Int) -> ())? { get set }
     func reloadData()
@@ -55,7 +54,6 @@ final class CurrencyConverterViewController: UIViewController {
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: self.layout)
     
-    var currencyTextFieldDidChangeHandler: ((Int, _ text: String?) -> ())?
     var onSelectCurrencyTappedHandler: ((Int) -> ())?
     var onCalculatorCellTappedHandler: ((Int) -> ())?
     var onCellTappedHandler: ((Int) -> ())?
@@ -99,7 +97,6 @@ final class CurrencyConverterViewController: UIViewController {
         NSLayoutConstraint.activate([
             self.collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-//            self.collectionView.topAnchor.constraint(equalTo: self.tableView.bottomAnchor),
             self.collectionView.heightAnchor.constraint(equalToConstant: self.view.frame.width),
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
@@ -112,7 +109,6 @@ final class CurrencyConverterViewController: UIViewController {
             self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             self.tableView.bottomAnchor.constraint(equalTo: self.collectionView.topAnchor)
-//            self.tableView.heightAnchor.constraint(equalToConstant: 180),
         ])
     }
 }
@@ -142,15 +138,11 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
                                                        for: indexPath) as? CurrencyConverterCell
         else { return UITableViewCell() }
         
-        let value = self.presenter.foo(index: indexPath.row)
+        let value = self.presenter.getCurrencyValueByIndex(indexPath.row)
         cell.setTextFieldValue(value)
         
         let model = self.presenter.getCurrencyModelByIndex(indexPath.row)
         cell.setViewModel(model)
-        
-        cell.textFieldHandler = { text in
-            self.currencyTextFieldDidChangeHandler?(indexPath.row, text)
-        }
         
         cell.onSelectCurrencyTappedHandler = {
             self.onSelectCurrencyTappedHandler?(indexPath.row)

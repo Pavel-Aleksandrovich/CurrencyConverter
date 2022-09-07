@@ -8,7 +8,7 @@
 import Foundation
 
 protocol CurrencySelectionPresenterDelegate: AnyObject {
-    func didSelectModel(_ model: ResponseCurrencyModel)
+    func didSelectCurrency(_ model: ResponseCurrencyModel)
 }
 
 protocol ICurrencySelectionPresenter: AnyObject {
@@ -39,12 +39,8 @@ extension CurrencySelectionPresenter: ICurrencySelectionPresenter {
     func onViewAttached(controller: ICurrencySelectionViewController) {
         self.controller = controller
         
-        self.array = try! self.storageService.getListCurrencies()
-        
-        self.controller?.onCellTappedHandler = { [ weak self ] model in
-            self?.delegate?.didSelectModel(model)
-            self?.router.popViewController()
-        }
+        self.getListCurrencies()
+        self.setOnCellTappedHandler()
     }
     
     func numberOfRowsInSection() -> Int {
@@ -53,5 +49,23 @@ extension CurrencySelectionPresenter: ICurrencySelectionPresenter {
     
     func getModelByIndex(_ index: Int) -> ResponseCurrencyModel {
         self.array[index]
+    }
+}
+
+private extension CurrencySelectionPresenter {
+    
+    func getListCurrencies() {
+        do {
+            self.array = try self.storageService.getListCurrencies()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func setOnCellTappedHandler() {
+        self.controller?.onCellTappedHandler = { [ weak self ] model in
+            self?.delegate?.didSelectCurrency(model)
+            self?.router.popViewController()
+        }
     }
 }

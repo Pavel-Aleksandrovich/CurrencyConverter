@@ -13,32 +13,26 @@ struct CurrencyConverterViewModel {
     let isFavorite: Bool
     let charCode: String
     let valueRub: String
+    let nominal: String
     
     init(model: ResponseCurrencyModel) {
         self.id = model.id
         self.name = model.name
         self.isFavorite = model.isFavorite
         self.charCode = model.charCode
-        self.valueRub = Self.getValueRub(nominalValue: model.nominal, valueRub: model.valueRub)
+        self.valueRub = model.valueRub
+        self.nominal = model.nominal
     }
     
-    static func getNominal(nominalValue: String) -> String {
-        guard var value = Double(nominalValue) else { return "" }
-        
-        value /= value
-        
-        return "\(value)"
-     }
-    
     static func getValueRub(nominalValue: String, valueRub: String) -> String {
-        var valueRub = Self.dsds(string: valueRub)
+        var valueRub = Self.toDoubleFromString(valueRub)
         guard let nominal = Double(nominalValue) else { return "" }
         valueRub /= nominal
         
         return "\(valueRub)"
      }
     
-    static func dsds(string: String) -> Double {
+    static func toDoubleFromString(_ string: String) -> Double {
         let numberFormatter = NumberFormatter()
         
         numberFormatter.decimalSeparator = "."
