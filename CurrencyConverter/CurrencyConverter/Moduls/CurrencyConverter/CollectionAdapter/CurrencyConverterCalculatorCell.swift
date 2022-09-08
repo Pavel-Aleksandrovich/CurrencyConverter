@@ -7,24 +7,53 @@
 
 import UIKit
 
-final class CalculatorCollectionCell: UICollectionViewCell {
+final class CurrencyConverterCalculatorCell: UICollectionViewCell {
     
-    private enum Constants {
-        static let cornerRadius: CGFloat = 5
-    }
-    
-    static let id = String(describing: CalculatorCollectionCell.self)
+    static let id = String(describing: CurrencyConverterCalculatorCell.self)
     
     private let numberLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .magenta
-        
+        self.configAppearance()
+        self.makeConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension CurrencyConverterCalculatorCell {
+    
+    func setData(_ data: CalculatorButtons) {
+        self.numberLabel.text = data.rawValue
+        self.numberLabel.backgroundColor = data.color
+    }
+}
+
+// MARK: - Config Appearance
+private extension CurrencyConverterCalculatorCell {
+    
+    func configAppearance() {
+        self.configNumberLabel()
+    }
+    
+    func configNumberLabel() {
         self.numberLabel.textAlignment = .center
         self.numberLabel.font = UIFont.boldSystemFont(ofSize: 35)
         self.numberLabel.textColor = .white
-        
+    }
+}
+
+// MARK: - Make Constraints
+private extension CurrencyConverterCalculatorCell {
+    
+    func makeConstraints() {
+        self.makeNumberLabelConstraints()
+    }
+    
+    func makeNumberLabelConstraints() {
         self.addSubview(self.numberLabel)
         self.numberLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -34,15 +63,5 @@ final class CalculatorCollectionCell: UICollectionViewCell {
             self.numberLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             self.numberLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
         ])
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setData(_ data: CalculatorType) {
-        self.numberLabel.text = data.rawValue
-        self.numberLabel.backgroundColor = data.color
     }
 }

@@ -17,14 +17,11 @@ protocol ICurrencyConverterPresenter: AnyObject {
 final class CurrencyConverterPresenter {
     
     private weak var controller: ICurrencyConverterViewController?
-    private let storageService: ICoreDataStorage
     private let router: ICurrencyConverterRouter
     private let converter: ICurrencyConverter
     
-    init(storageService: ICoreDataStorage,
-         router: ICurrencyConverterRouter,
+    init(router: ICurrencyConverterRouter,
          converter: ICurrencyConverter) {
-        self.storageService = storageService
         self.router = router
         self.converter = converter
     }

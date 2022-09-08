@@ -24,9 +24,7 @@ extension CurrencyEntity {
     @NSManaged public var valueRub: String
 }
 
-extension CurrencyEntity : Identifiable {
-
-}
+extension CurrencyEntity : Identifiable {}
 
 extension CurrencyEntity {
     
@@ -44,15 +42,6 @@ extension CurrencyEntity {
     }
 }
 
-struct RequestFavoriteCurrencyModel {
-    let id: UUID
-    let name: String
-    let isFavorite: Bool
-    let charCode: String
-    let nominal: String
-    let valueRub: String
-}
-
 struct RequestCurrencyModel {
     let id: UUID
     let name: String
@@ -65,24 +54,6 @@ struct RequestCurrencyModel {
         self.id = UUID()
         self.name = model.name
         self.isFavorite = false
-        self.charCode = model.charCode
-        self.nominal = model.nominal
-        self.valueRub = model.valueRub
-    }
-}
-
-struct ResponseCurrencyModel {
-    let id: UUID
-    let name: String
-    let isFavorite: Bool
-    let charCode: String
-    let nominal: String
-    let valueRub: String
-    
-    init(model: CurrencyEntity) {
-        self.id = model.id
-        self.name = model.name
-        self.isFavorite = model.isFavorite
         self.charCode = model.charCode
         self.nominal = model.nominal
         self.valueRub = model.valueRub

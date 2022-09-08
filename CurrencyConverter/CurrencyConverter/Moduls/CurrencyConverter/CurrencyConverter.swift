@@ -72,7 +72,7 @@ extension CurrencyConverter: ICurrencyConverter {
     }
     
     func onCalculatorCellTappedByIndex(_ index: Int) {
-        let type = CalculatorType.allCases[index]
+        let type = CalculatorButtons.allCases[index]
         
         switch CurrencyType.allCases[self.didSelectCellAtIndex] {
         case .first:
@@ -87,7 +87,7 @@ extension CurrencyConverter: ICurrencyConverter {
 
 private extension CurrencyConverter {
     
-    func onCalculatorCellTappedFirstCurrency(type: CalculatorType) {
+    func onCalculatorCellTappedFirstCurrency(type: CalculatorButtons) {
         switch type {
         case .o4ne:
             if self.firstCurrencyEnteredValue.isEmpty == false {
@@ -109,7 +109,7 @@ private extension CurrencyConverter {
         }
     }
     
-    func onCalculatorCellTappedSecondCurrency(type: CalculatorType) {
+    func onCalculatorCellTappedSecondCurrency(type: CalculatorButtons) {
         switch type {
         case .o4ne:
             if self.secondCurrencyEnteredValue.isEmpty == false {

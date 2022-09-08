@@ -15,7 +15,7 @@ protocol ICurrencySelectionViewController: AnyObject {
 final class CurrencySelectionViewController: UIViewController {
     
     private let presenter: ICurrencySelectionPresenter
-    private let tableView = UITableView()
+    private let mainView = CurrencySelectionView()
     
     var onCellTappedHandler: ((ResponseCurrencyModel) -> ())?
     
@@ -28,28 +28,15 @@ final class CurrencySelectionViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        self.view = self.mainView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.presenter.onViewAttached(controller: self)
-        
-        self.view.backgroundColor = .white
-        
-        self.tableView.separatorStyle = .none
-        self.tableView.showsVerticalScrollIndicator = false
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.register(ListCurrenciesCell.self,
-                                        forCellReuseIdentifier: ListCurrenciesCell.id)
-        
-        self.view.addSubview(self.tableView)
-        self.tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-        ])
+        self.mainView.tableViewDelegate = self
+        self.mainView.tableViewDataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,7 +53,7 @@ final class CurrencySelectionViewController: UIViewController {
 extension CurrencySelectionViewController: ICurrencySelectionViewController {
     
     func reloadData() {
-        self.tableView.reloadData()
+        self.mainView.reloadData()
     }
 }
 
@@ -83,8 +70,9 @@ extension CurrencySelectionViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCurrenciesCell.id,
-                                                       for: indexPath) as? ListCurrenciesCell
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: ListCurrenciesTableCell.id,
+            for: indexPath) as? ListCurrenciesTableCell
         else { return UITableViewCell() }
         
         let model = self.presenter.getModelByIndex(indexPath.row)
