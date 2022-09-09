@@ -1,3 +1,7 @@
 # CurrencyConverter
 
-![](CurrencyConverter/Screenshots/filename 1scr.png)
+![](3scr.png)
+
+<div align="center">
+    <img src="/Screenshots/3scr.png" width="400px"</img> 
+</div>
