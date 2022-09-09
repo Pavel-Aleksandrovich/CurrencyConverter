@@ -56,6 +56,8 @@
 		84DC689028CB0AEA006BCEB0 /* ListCurrenciesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC688F28CB0AEA006BCEB0 /* ListCurrenciesUITests.swift */; };
 		84DC689228CB0FBA006BCEB0 /* CurrencyConverterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC689128CB0FBA006BCEB0 /* CurrencyConverterUITests.swift */; };
 		84DC689428CB2B0F006BCEB0 /* CurrencySelectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC689328CB2B0F006BCEB0 /* CurrencySelectionUITests.swift */; };
+		84DC689728CB5755006BCEB0 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 84DC689628CB5755006BCEB0 /* 1.png */; };
+		84DC689928CB589C006BCEB0 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 84DC689828CB589C006BCEB0 /* 2.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +123,8 @@
 		84DC688F28CB0AEA006BCEB0 /* ListCurrenciesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCurrenciesUITests.swift; sourceTree = "<group>"; };
 		84DC689128CB0FBA006BCEB0 /* CurrencyConverterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterUITests.swift; sourceTree = "<group>"; };
 		84DC689328CB2B0F006BCEB0 /* CurrencySelectionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionUITests.swift; sourceTree = "<group>"; };
+		84DC689628CB5755006BCEB0 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 1.png; path = ../../../1.png; sourceTree = "<group>"; };
+		84DC689828CB589C006BCEB0 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 2.png; path = ../../../2.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				84DC67F228BDC7E3006BCEB0 /* CurrencyConverter */,
+				84DC689528CB5737006BCEB0 /* Screenshots */,
 				84DC688528CAEEE8006BCEB0 /* UITests */,
 				84DC67F128BDC7E3006BCEB0 /* Products */,
 			);
@@ -343,6 +348,15 @@
 			path = UITests;
 			sourceTree = "<group>";
 		};
+		84DC689528CB5737006BCEB0 /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				84DC689828CB589C006BCEB0 /* 2.png */,
+				84DC689628CB5755006BCEB0 /* 1.png */,
+			);
+			path = Screenshots;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -424,7 +438,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84DC689728CB5755006BCEB0 /* 1.png in Resources */,
 				84DC680028BDC7E4006BCEB0 /* LaunchScreen.storyboard in Resources */,
+				84DC689928CB589C006BCEB0 /* 2.png in Resources */,
 				84DC67FD28BDC7E4006BCEB0 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
