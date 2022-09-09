@@ -70,8 +70,9 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CurrencyConverterTableCell.id,
-                                                       for: indexPath) as? CurrencyConverterTableCell
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CurrencyConverterTableCell.id,
+            for: indexPath) as? CurrencyConverterTableCell
         else { return UITableViewCell() }
         
         let value = self.presenter.getCurrencyValueByIndex(indexPath.row)
@@ -83,6 +84,8 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
         cell.onSelectCurrencyTappedHandler = {
             self.onSelectCurrencyTappedHandler?(indexPath.row)
         }
+        
+        cell.accessibilityIdentifier = "\(indexPath.row)"
         
         return cell
     }

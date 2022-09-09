@@ -64,6 +64,7 @@ private extension CurrencySelectionView {
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.register(ListCurrenciesTableCell.self,
                                         forCellReuseIdentifier: ListCurrenciesTableCell.id)
+        self.tableView.accessibilityIdentifier = "CurrencySelectionTableView"
     }
 }
 

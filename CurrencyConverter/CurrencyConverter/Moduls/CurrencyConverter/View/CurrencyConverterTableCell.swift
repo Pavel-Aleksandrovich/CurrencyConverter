@@ -41,6 +41,7 @@ extension CurrencyConverterTableCell {
             self.currencyImageView.image = UIImage(named: model.charCode)
         } else {
             self.currencyImageView.image = UIImage(systemName: "flag.slash.fill")
+            self.charCodeLabel.text = ""
         }
     }
     
@@ -91,6 +92,7 @@ private extension CurrencyConverterTableCell {
         self.currencyImageView.contentMode = .scaleAspectFill
         self.currencyImageView.isUserInteractionEnabled = true
         self.currencyImageView.layer.cornerRadius = (self.bounds.height/1.7)/2
+        self.currencyImageView.accessibilityIdentifier = "Image"
     }
 }
 

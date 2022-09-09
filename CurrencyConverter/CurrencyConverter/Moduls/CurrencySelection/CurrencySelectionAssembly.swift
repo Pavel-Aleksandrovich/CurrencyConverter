@@ -9,13 +9,13 @@ import UIKit
 
 enum CurrencySelectionAssembly {
     
-    static func build(delegate: CurrencyConverterPresenter) -> UIViewController {
+    static func build(completion: @escaping(ResponseCurrencyModel) -> ()) -> UIViewController {
         
         let storageService = CoreDataStorage()
         let router = CurrencySelectionRouter()
         let presenter = CurrencySelectionPresenter(storageService: storageService,
                                                    router: router,
-                                                   delegate: delegate)
+                                                   completion: completion)
         let controller = CurrencySelectionViewController(presenter: presenter)
         router.controller = controller
         

@@ -83,6 +83,8 @@ extension ListCurrenciesViewController: UITableViewDataSource, UITableViewDelega
             self.onFavoriteButtonTappedHandler?(request)
         }
         
+        cell.accessibilityIdentifier = "\(indexPath.row)"
+        
         return cell
     }
 }

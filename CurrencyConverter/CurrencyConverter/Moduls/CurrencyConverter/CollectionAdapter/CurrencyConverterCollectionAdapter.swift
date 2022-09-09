@@ -21,7 +21,7 @@ extension CurrencyConverterCollectionAdapter: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if CalculatorButtons.allCases[indexPath.item] == .o13ne || CalculatorButtons.allCases[indexPath.item] == .o14ne {
+        if CalculatorButtons.allCases[indexPath.item] == .zero || CalculatorButtons.allCases[indexPath.item] == .comma {
             return CGSize(width: collectionView.frame.width/2 - 0.5,
                           height: collectionView.frame.height/4 - 1)
         }
@@ -56,6 +56,8 @@ extension CurrencyConverterCollectionAdapter: UICollectionViewDataSource {
         
         let type = CalculatorButtons.allCases[indexPath.row]
         cell.setData(type)
+        
+        cell.accessibilityIdentifier = "\(indexPath.row)"
         
         return cell
     }

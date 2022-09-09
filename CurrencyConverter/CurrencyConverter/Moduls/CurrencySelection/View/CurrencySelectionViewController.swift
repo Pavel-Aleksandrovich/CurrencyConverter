@@ -79,6 +79,8 @@ extension CurrencySelectionViewController: UITableViewDataSource, UITableViewDel
         cell.favoriteImageView.isHidden = true
         cell.setViewModel(model)
         
+        cell.accessibilityIdentifier = "\(indexPath.row)"
+        
         return cell
     }
     

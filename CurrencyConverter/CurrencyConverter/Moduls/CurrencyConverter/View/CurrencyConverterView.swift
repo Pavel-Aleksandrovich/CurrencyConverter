@@ -92,16 +92,18 @@ private extension CurrencyConverterView {
     }
     
     func configCollectionView() {
-        self.collectionView.backgroundColor = .clear
+        self.collectionView.backgroundColor = .white
         self.collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.register(CurrencyConverterCalculatorCell.self,
                                      forCellWithReuseIdentifier: CurrencyConverterCalculatorCell.id)
+        self.collectionView.accessibilityIdentifier = "CurrencyConverterCollectionView"
     }
     
     func configTableView() {
-        self.tableView.backgroundColor = .darkGray
+        self.tableView.backgroundColor = .white
         self.tableView.register(CurrencyConverterTableCell.self,
                                 forCellReuseIdentifier: CurrencyConverterTableCell.id)
+        self.tableView.accessibilityIdentifier = "CurrencyConverterTableView"
     }
 }
 

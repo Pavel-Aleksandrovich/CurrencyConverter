@@ -69,6 +69,7 @@ private extension ListCurrenciesTableCell {
         self.favoriteImageView.tintColor = .darkGray
         self.favoriteImageView.contentMode = .scaleAspectFill
         self.favoriteImageView.isUserInteractionEnabled = true
+        self.favoriteImageView.accessibilityIdentifier = "Favorite"
     }
     
     func configCharCodeLabel() {
@@ -148,7 +149,7 @@ private extension ListCurrenciesTableCell {
             self.charCodeLabel.topAnchor.constraint(equalTo: self.topAnchor),
             self.charCodeLabel.bottomAnchor.constraint(equalTo: self.centerYAnchor),
         ])
-    } 
+    }
 }
 
 private extension ListCurrenciesTableCell {

@@ -92,13 +92,16 @@ private extension ListCurrenciesView {
         self.collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.register(ListCurrenciesCollectionCell.self,
                                      forCellWithReuseIdentifier: ListCurrenciesCollectionCell.id)
+        self.collectionView.accessibilityIdentifier = "ListCurrenciesCollectionView"
     }
     
     func configTableView() {
+        self.tableView.backgroundColor = .clear
         self.tableView.separatorStyle = .none
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.register(ListCurrenciesTableCell.self,
                                 forCellReuseIdentifier: ListCurrenciesTableCell.id)
+        self.tableView.accessibilityIdentifier = "ListCurrenciesTableView"
     }
 }
 

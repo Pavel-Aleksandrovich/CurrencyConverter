@@ -23,4 +23,13 @@ struct CurrencyConverterViewModel {
         self.valueRub = model.valueRub
         self.nominal = model.nominal
     }
+    
+    init() {
+        self.id = UUID()
+        self.name = String()
+        self.isFavorite = Bool()
+        self.charCode = "FLAG"
+        self.valueRub = String()
+        self.nominal = String()
+    }
 }

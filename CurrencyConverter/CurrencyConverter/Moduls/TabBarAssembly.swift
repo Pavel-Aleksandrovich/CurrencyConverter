@@ -15,6 +15,8 @@ final class TabBarAssembly: UITabBarController {
                                 self.createCurrencyConverterViewController()]
         
         self.tabBar.tintColor = .black
+        
+        self.tabBar.accessibilityIdentifier = "MainTabBar"
     }
 }
 
@@ -27,6 +29,8 @@ private extension TabBarAssembly {
                                      image: image,
                                      tag: 0)
         
+        vc.tabBarItem.accessibilityIdentifier = "0"
+        
         return UINavigationController(rootViewController: vc)
     }
     
@@ -36,6 +40,8 @@ private extension TabBarAssembly {
         vc.tabBarItem = UITabBarItem(title: "Converter",
                                      image: image,
                                      tag: 1)
+        
+        vc.tabBarItem.accessibilityIdentifier = "1"
         
         return UINavigationController(rootViewController: vc)
     }

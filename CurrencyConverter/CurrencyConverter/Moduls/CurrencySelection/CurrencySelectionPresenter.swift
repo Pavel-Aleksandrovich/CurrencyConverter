@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol CurrencySelectionPresenterDelegate: AnyObject {
-    func didSelectCurrency(_ model: ResponseCurrencyModel)
-}
-
 protocol ICurrencySelectionPresenter: AnyObject {
     func onViewAttached(controller: ICurrencySelectionViewController)
     func numberOfRowsInSection() -> Int
@@ -20,17 +16,18 @@ protocol ICurrencySelectionPresenter: AnyObject {
 final class CurrencySelectionPresenter {
     
     private weak var controller: ICurrencySelectionViewController?
-    private weak var delegate: CurrencySelectionPresenterDelegate?
     private let storageService: ICoreDataStorage
     private let router: ICurrencySelectionRouter
     private var array: [ResponseCurrencyModel] = []
     
+    private let didSelectCurrencyHandler: (ResponseCurrencyModel) -> ()
+    
     init(storageService: ICoreDataStorage,
          router: ICurrencySelectionRouter,
-         delegate: CurrencyConverterPresenter) {
+         completion: @escaping(ResponseCurrencyModel) -> ()) {
         self.storageService = storageService
         self.router = router
-        self.delegate = delegate
+        self.didSelectCurrencyHandler = completion
     }
 }
 
@@ -64,7 +61,7 @@ private extension CurrencySelectionPresenter {
     
     func setOnCellTappedHandler() {
         self.controller?.onCellTappedHandler = { [ weak self ] model in
-            self?.delegate?.didSelectCurrency(model)
+            self?.didSelectCurrencyHandler(model)
             self?.router.popViewController()
         }
     }

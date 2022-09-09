@@ -56,6 +56,8 @@ extension ListCurrenciesCollectionAdapter: UICollectionViewDataSource {
         let type = TypeCurrencies.allCases[indexPath.row]
         cell.setData(type)
         
+        cell.accessibilityIdentifier = "\(indexPath.row)"
+        
         return cell
     }
 }

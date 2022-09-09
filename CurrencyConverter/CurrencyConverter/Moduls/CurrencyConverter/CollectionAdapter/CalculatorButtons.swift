@@ -8,27 +8,27 @@
 import UIKit
 
 enum CalculatorButtons: String, CaseIterable {
+    case seven = "7"
+    case eight = "8"
+    case nine = "9"
+    case removeLast = "←"
+    case four = "4"
+    case five = "5"
+    case six = "6"
+    case rotation = "↑↓"
     case one = "1"
-    case o2ne = "2"
-    case o3ne = "3"
-    case o4ne = "←"
-    case o5ne = "4"
-    case o6ne = "5"
-    case o7ne = "6"
-    case o8ne = "↑↓"
-    case o9ne = "7"
-    case o10ne = "8"
-    case o11ne = "9"
-    case o12ne = "C"
-    case o13ne = "0"
-    case o14ne = ","
+    case two = "2"
+    case three = "3"
+    case removeAll = "C"
+    case zero = "0"
+    case comma = ","
     
     var color: UIColor {
         switch self {
-        case .o4ne: return UIColor.orange
-        case .o8ne: return UIColor.orange
-        case .o12ne: return UIColor.orange
-        case .o14ne: return UIColor.orange
+        case .removeLast: return UIColor.orange
+        case .rotation: return UIColor.orange
+        case .removeAll: return UIColor.orange
+        case .comma: return UIColor.orange
         default : return UIColor.systemGray
         }
     }
