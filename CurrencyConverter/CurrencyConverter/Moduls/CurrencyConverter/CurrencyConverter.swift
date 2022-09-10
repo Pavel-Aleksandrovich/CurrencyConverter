@@ -48,6 +48,10 @@ extension CurrencyConverter: ICurrencyConverter {
     func addСomma(_ comma: String, toString: String) -> String {
         var toString = toString
         
+        if toString.isEmpty {
+            return toString
+        }
+        
         if toString.contains(comma) == false {
             toString += comma
         }
@@ -56,14 +60,26 @@ extension CurrencyConverter: ICurrencyConverter {
     }
     
     func getNominal(x: Double, y: Double) -> Double {
-        x / y
+        if y == Double(0) {
+            return x
+        }
+        
+        return x / y
     }
     
     func getFirstValue(value: Double, first: Double, second: Double) -> Double {
-        value * second / first
+        if first == Double(0) {
+            return value * second
+        }
+        
+        return value * second / first
     }
     
     func getSecondValue(value: Double, first: Double, second: Double) -> Double {
-        value * first / second
+        if second == Double(0) {
+            return value * first
+        }
+        
+        return value * first / second
     }
 }
