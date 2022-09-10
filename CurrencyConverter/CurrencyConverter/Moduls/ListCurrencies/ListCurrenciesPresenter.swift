@@ -76,7 +76,7 @@ private extension ListCurrenciesPresenter {
         }
     }
     
-    func saveCurrencies(array: [CRBApiModel]) {
+    func saveCurrencies(array: [CurrencyDTO]) {
         let request = array.map { RequestCurrencyModel(model: $0)}
         
         request.forEach { model in

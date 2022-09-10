@@ -7,34 +7,32 @@
 
 import Foundation
 
-protocol IParser {
-    associatedtype Model
-    func parse(data: Data) -> [Model]?
+protocol ICurrencyXMLParser {
+    func parse(data: Data) -> [CurrencyDTO]
 }
 
-class CRBParser: NSObject, IParser {
+final class CurrencyXMLParser: NSObject {
     
-    typealias Model = CRBApiModel
+    private var models: [CurrencyDTO] = []
+    private var currency = String()
+    private var charCode = String()
+    private var nominal = String()
+    private var name = String()
+    private var value = String()
+}
+
+extension CurrencyXMLParser: ICurrencyXMLParser {
     
-    private var models: [Model] = []
-    private var currency = ""
-    private var charCode = ""
-    private var nominal = ""
-    private var name = ""
-    private var value = ""
-    
-    func parse(data: Data) -> [Model]? {
-        
-        let delegate = self
+    func parse(data: Data) -> [CurrencyDTO] {
         let parser = XMLParser(data: data)
-        parser.delegate = delegate
+        parser.delegate = self
         parser.parse()
         
         return models
     }
 }
 
-extension CRBParser: XMLParserDelegate {
+extension CurrencyXMLParser: XMLParserDelegate {
     
     func parser(
         _ parser: XMLParser,
@@ -70,7 +68,7 @@ extension CRBParser: XMLParserDelegate {
         qualifiedName qName: String?
     ) {
         if elementName == "Valute" {
-            let model = Model(
+            let model = CurrencyDTO(
                 charCode: charCode,
                 nominal: nominal,
                 name: name,

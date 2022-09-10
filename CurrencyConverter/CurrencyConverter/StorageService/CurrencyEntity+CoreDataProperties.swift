@@ -50,7 +50,7 @@ struct RequestCurrencyModel {
     let nominal: String
     let valueRub: String
     
-    init(model: CRBApiModel) {
+    init(model: CurrencyDTO) {
         self.id = UUID()
         self.name = model.name
         self.isFavorite = false

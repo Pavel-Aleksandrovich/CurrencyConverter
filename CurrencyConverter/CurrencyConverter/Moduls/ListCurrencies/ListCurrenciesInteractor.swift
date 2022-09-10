@@ -8,7 +8,7 @@
 import Foundation
 
 protocol IListCurrenciesInteractor: AnyObject {
-    func loadCurrenciesFromNetwork(completion: @escaping(Result<[CRBApiModel], NetworkError>) -> ())
+    func loadCurrenciesFromNetwork(completion: @escaping(Result<[CurrencyDTO], NetworkError>) -> ())
     func createCurrency(model: RequestCurrencyModel,
                         completion: @escaping((Error) -> ()))
     func getListCurrencies(completion: @escaping((Result<[ResponseCurrencyModel],
@@ -21,21 +21,35 @@ protocol IListCurrenciesInteractor: AnyObject {
 
 final class ListCurrenciesInteractor {
     
-    private let networkService: IRequestSender
+    private let networkService: INetworkService
     private let storageService: ICoreDataStorage
+    private let parser: ICurrencyXMLParser
     
-    init(networkService: IRequestSender, storageService: ICoreDataStorage) {
+    init(networkService: INetworkService,
+         storageService: ICoreDataStorage,
+         parser: ICurrencyXMLParser) {
         self.networkService = networkService
         self.storageService = storageService
+        self.parser = parser
     }
 }
 
 extension ListCurrenciesInteractor: IListCurrenciesInteractor {
     
-    func loadCurrenciesFromNetwork(completion: @escaping(Result<[CRBApiModel], NetworkError>) -> ()) {
-        let requestConfig = RequestFactory.CBRCurrencyRequest.modelConfig()
+    func loadCurrenciesFromNetwork(completion: @escaping(Result<[CurrencyDTO],
+                                                         NetworkError>) -> ()) {
         
-        self.networkService.send(config: requestConfig, completionHandler: completion)
+        self.networkService.loadData { [ weak self ] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let data):
+                let model = self.parser.parse(data: data)
+                completion(.success(model))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     func createCurrency(model: RequestCurrencyModel,
