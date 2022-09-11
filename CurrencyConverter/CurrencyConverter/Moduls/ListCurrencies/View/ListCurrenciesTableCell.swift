@@ -32,7 +32,7 @@ final class ListCurrenciesTableCell: UITableViewCell {
 
 extension ListCurrenciesTableCell {
     
-    func setViewModel(_ model: ResponseCurrencyModel) {
+    func setViewModel(_ model: ListCurrencyViewModel) {
         self.currencyNameLabel.text = model.name
         self.flagImageView.image = UIImage(named: model.charCode)
         self.charCodeLabel.text = model.charCode

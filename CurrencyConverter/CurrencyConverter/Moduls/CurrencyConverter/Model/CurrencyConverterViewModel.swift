@@ -15,15 +15,6 @@ struct CurrencyConverterViewModel {
     let valueRub: String
     let nominal: String
     
-    init(model: ResponseCurrencyModel) {
-        self.id = model.id
-        self.name = model.name
-        self.isFavorite = model.isFavorite
-        self.charCode = model.charCode
-        self.valueRub = model.valueRub
-        self.nominal = model.nominal
-    }
-    
     init() {
         self.id = UUID()
         self.name = String()
@@ -31,5 +22,14 @@ struct CurrencyConverterViewModel {
         self.charCode = "FLAG"
         self.valueRub = String()
         self.nominal = String()
+    }
+    
+    init(model: ListCurrencyViewModel) {
+        self.id = model.id
+        self.name = model.name
+        self.isFavorite = model.isFavorite
+        self.charCode = model.charCode
+        self.valueRub = model.valueRub
+        self.nominal = model.nominal
     }
 }

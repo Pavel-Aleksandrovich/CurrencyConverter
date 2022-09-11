@@ -10,14 +10,14 @@ import Foundation
 protocol IListCurrenciesPresenter: AnyObject {
     func onViewAttached(controller: IListCurrenciesViewController)
     func numberOfRowsInSection() -> Int
-    func getModelByIndex(_ index: Int) -> ResponseCurrencyModel
+    func getModelByIndex(_ index: Int) -> ListCurrencyViewModel
 }
 
 final class ListCurrenciesPresenter {
     
     private let interactor: IListCurrenciesInteractor
     private weak var controller: IListCurrenciesViewController?
-    private var array: [ResponseCurrencyModel] = []
+    private var array: [ListCurrencyViewModel] = []
     private var type: TypeCurrencies = .list
     
     init(interactor: IListCurrenciesInteractor) {
@@ -39,7 +39,7 @@ extension ListCurrenciesPresenter: IListCurrenciesPresenter {
         self.array.count
     }
     
-    func getModelByIndex(_ index: Int) -> ResponseCurrencyModel {
+    func getModelByIndex(_ index: Int) -> ListCurrencyViewModel {
         self.array[index]
     }
 }
@@ -49,7 +49,7 @@ private extension ListCurrenciesPresenter {
     func setOnCollectionCellTappedHandler() {
         self.controller?.onCollectionCellTappedHandler = { index in
             self.type = TypeCurrencies.allCases[index]
-            self.loadCurrencies()
+            self.getCurrencies()
         }
     }
     
@@ -58,7 +58,7 @@ private extension ListCurrenciesPresenter {
             guard let self = self else { return }
             
             self.updateCurrency(model: model)
-            self.loadCurrencies()
+            self.getCurrencies()
         }
     }
     
@@ -67,8 +67,8 @@ private extension ListCurrenciesPresenter {
             switch result {
             case .success(let array):
                 DispatchQueue.main.async {
-                    self.saveCurrencies(array: array)
-                    self.loadCurrencies()
+                    self.createCurrency(array: array)
+                    self.getCurrencies()
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -76,7 +76,7 @@ private extension ListCurrenciesPresenter {
         }
     }
     
-    func saveCurrencies(array: [CurrencyDTO]) {
+    func createCurrency(array: [CurrencyDTO]) {
         let request = array.map { RequestCurrencyModel(model: $0)}
         
         request.forEach { model in
@@ -92,33 +92,33 @@ private extension ListCurrenciesPresenter {
         }
     }
     
-    func loadCurrencies() {
+    func getCurrencies() {
         switch self.type {
         case .list:
-            self.loadListCurrencies()
+            self.getAllCurrencies()
         case .favorite:
-            self.loadFavoriteCurrencies()
+            self.getFavoriteCurrencies()
         }
         
         self.controller?.reloadData()
     }
     
-    func loadListCurrencies() {
-        self.interactor.getListCurrencies { [ weak self ] result in
+    func getAllCurrencies() {
+        self.interactor.getAllCurrencies { [ weak self ] result in
             switch result {
             case .success(let array):
-                self?.array = array
+                self?.array = array.map { ListCurrencyViewModel(model: $0) }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
     
-    func loadFavoriteCurrencies() {
+    func getFavoriteCurrencies() {
         self.interactor.getFavoriteCurrencies { [ weak self ] result in
             switch result {
             case .success(let array):
-                self?.array = array
+                self?.array = array.map { ListCurrencyViewModel(model: $0) }
             case .failure(let error):
                 print(error.localizedDescription)
             }

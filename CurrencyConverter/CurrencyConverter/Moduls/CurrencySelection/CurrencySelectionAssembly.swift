@@ -9,7 +9,7 @@ import UIKit
 
 enum CurrencySelectionAssembly {
     
-    static func build(completion: @escaping(ResponseCurrencyModel) -> ()) -> UIViewController {
+    static func build(completion: @escaping(ListCurrencyViewModel) -> ()) -> UIViewController {
         
         let storageService = CoreDataStorage()
         let router = CurrencySelectionRouter()

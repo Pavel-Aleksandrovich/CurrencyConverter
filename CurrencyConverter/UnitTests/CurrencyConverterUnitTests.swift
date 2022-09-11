@@ -1,5 +1,5 @@
 //
-//  UnitTests.swift
+//  CurrencyConverterUnitTests.swift
 //  UnitTests
 //
 //  Created by pavel mishanin on 10.09.2022.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import CurrencyConverter
 
-class UnitTests: XCTestCase {
+class CurrencyConverterUnitTests: XCTestCase {
 
     private var sut: CurrencyConverter!
     

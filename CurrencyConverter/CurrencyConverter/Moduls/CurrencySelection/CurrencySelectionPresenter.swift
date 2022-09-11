@@ -10,7 +10,7 @@ import Foundation
 protocol ICurrencySelectionPresenter: AnyObject {
     func onViewAttached(controller: ICurrencySelectionViewController)
     func numberOfRowsInSection() -> Int
-    func getModelByIndex(_ index: Int) -> ResponseCurrencyModel
+    func getModelByIndex(_ index: Int) -> ListCurrencyViewModel
 }
 
 final class CurrencySelectionPresenter {
@@ -18,13 +18,13 @@ final class CurrencySelectionPresenter {
     private weak var controller: ICurrencySelectionViewController?
     private let storageService: ICoreDataStorage
     private let router: ICurrencySelectionRouter
-    private var array: [ResponseCurrencyModel] = []
+    private var array: [ListCurrencyViewModel] = []
     
-    private let didSelectCurrencyHandler: (ResponseCurrencyModel) -> ()
+    private let didSelectCurrencyHandler: (ListCurrencyViewModel) -> ()
     
     init(storageService: ICoreDataStorage,
          router: ICurrencySelectionRouter,
-         completion: @escaping(ResponseCurrencyModel) -> ()) {
+         completion: @escaping(ListCurrencyViewModel) -> ()) {
         self.storageService = storageService
         self.router = router
         self.didSelectCurrencyHandler = completion
@@ -36,7 +36,7 @@ extension CurrencySelectionPresenter: ICurrencySelectionPresenter {
     func onViewAttached(controller: ICurrencySelectionViewController) {
         self.controller = controller
         
-        self.getListCurrencies()
+        self.getAllCurrencies()
         self.setOnCellTappedHandler()
     }
     
@@ -44,16 +44,18 @@ extension CurrencySelectionPresenter: ICurrencySelectionPresenter {
         self.array.count
     }
     
-    func getModelByIndex(_ index: Int) -> ResponseCurrencyModel {
+    func getModelByIndex(_ index: Int) -> ListCurrencyViewModel {
         self.array[index]
     }
 }
 
 private extension CurrencySelectionPresenter {
     
-    func getListCurrencies() {
+    func getAllCurrencies() {
         do {
-            self.array = try self.storageService.getListCurrencies()
+            let array = try self.storageService.getAllCurrencies()
+            
+            self.array = array.map { ListCurrencyViewModel(model: $0) }
         } catch {
             print(error.localizedDescription)
         }

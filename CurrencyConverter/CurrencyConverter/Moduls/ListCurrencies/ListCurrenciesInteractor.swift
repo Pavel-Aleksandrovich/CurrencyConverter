@@ -11,7 +11,7 @@ protocol IListCurrenciesInteractor: AnyObject {
     func loadCurrenciesFromNetwork(completion: @escaping(Result<[CurrencyDTO], NetworkError>) -> ())
     func createCurrency(model: RequestCurrencyModel,
                         completion: @escaping((Error) -> ()))
-    func getListCurrencies(completion: @escaping((Result<[ResponseCurrencyModel],
+    func getAllCurrencies(completion: @escaping((Result<[ResponseCurrencyModel],
                                                   Error>) -> ()))
     func updateCurrency(model: RequestFavoriteCurrencyModel,
                         completion: @escaping((Error) -> ()))
@@ -52,31 +52,42 @@ extension ListCurrenciesInteractor: IListCurrenciesInteractor {
         }
     }
     
-    func createCurrency(model: RequestCurrencyModel,
-                        completion: @escaping((Error) -> ())) {
-        do {
-            try self.storageService.createCurrency(model: model)
-        } catch {
-            completion(error)
-        }
-    }
-    
-    func getListCurrencies(completion: @escaping((Result<[ResponseCurrencyModel],
-                                                  Error>) -> ())) {
-        do {
-           let success = try self.storageService.getListCurrencies()
-            completion(.success(success))
-        } catch {
-            completion(.failure(error))
-        }
-    }
-    
     func updateCurrency(model: RequestFavoriteCurrencyModel,
                         completion: @escaping((Error) -> ())) {
         do {
-            try self.storageService.updateCurrency(model: model)
+            let currency = try self.storageService.getCurrencyById(model.id)
+            
+            if let currency = currency {
+                self.storageService.updateCurrency(model: currency,
+                                                   newModel: model)
+            }
         } catch {
             completion(error)
+        }
+    }
+    
+    func createCurrency(model: RequestCurrencyModel,
+                        completion: @escaping((Error) -> ())) {
+        
+        self.getAllCurrencies { result in
+            switch result {
+            case .success(let successModel):
+                if successModel.contains(where: { $0.name == model.name }) == false {
+                    self.storageService.createCurrency(model: model)
+                }
+            case .failure(let error):
+                completion(error)
+            }
+        }
+    }
+    
+    func getAllCurrencies(completion: @escaping((Result<[ResponseCurrencyModel],
+                                                  Error>) -> ())) {
+        do {
+           let success = try self.storageService.getAllCurrencies()
+            completion(.success(success))
+        } catch {
+            completion(.failure(error))
         }
     }
     

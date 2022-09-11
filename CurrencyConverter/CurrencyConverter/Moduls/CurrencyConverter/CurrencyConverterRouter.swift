@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ICurrencyConverterRouter: AnyObject {
-    func pushToSelectCurrencyModul(completion: @escaping(ResponseCurrencyModel) -> ())
+    func pushToSelectCurrencyModul(completion: @escaping(ListCurrencyViewModel) -> ())
 }
 
 final class CurrencyConverterRouter {
@@ -18,7 +18,7 @@ final class CurrencyConverterRouter {
 
 extension CurrencyConverterRouter: ICurrencyConverterRouter {
     
-    func pushToSelectCurrencyModul(completion: @escaping(ResponseCurrencyModel) -> ()) {
+    func pushToSelectCurrencyModul(completion: @escaping(ListCurrencyViewModel) -> ()) {
         let vc = CurrencySelectionAssembly.build(completion: completion)
         self.controller?.navigationController?.pushViewController(vc, animated: true)
     }

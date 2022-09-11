@@ -9,10 +9,12 @@ import Foundation
 import CoreData
 
 protocol ICoreDataStorage: AnyObject {
-    func getListCurrencies() throws -> [ResponseCurrencyModel]
-    func createCurrency(model: RequestCurrencyModel) throws
-    func updateCurrency(model: RequestFavoriteCurrencyModel) throws
+    func getAllCurrencies() throws -> [ResponseCurrencyModel]
     func getFavoriteCurrencies() throws -> [ResponseCurrencyModel]
+    func createCurrency(model: RequestCurrencyModel)
+    func getCurrencyById(_ id: UUID) throws -> CurrencyEntity?
+    func updateCurrency(model: CurrencyEntity,
+                        newModel: RequestFavoriteCurrencyModel)
 }
 
 final class CoreDataStorage {
@@ -32,37 +34,34 @@ final class CoreDataStorage {
 
 extension CoreDataStorage: ICoreDataStorage {
     
-    func updateCurrency(model: RequestFavoriteCurrencyModel) throws {
-        let fetchRequest = CurrencyEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id = %@",
-                                             model.id.description)
-        
-        let currencies = try self.context.fetch(fetchRequest)
-        
-        if let currencyForDelete = currencies.first {
-            currencyForDelete.setRequestFavoriteModel(from: model)
-            self.saveContext()
-        }
+    func updateCurrency(model: CurrencyEntity,
+                        newModel: RequestFavoriteCurrencyModel) {
+        model.setRequestFavoriteModel(from: newModel)
+        self.saveContext()
     }
     
-    func getListCurrencies() throws -> [ResponseCurrencyModel] {
+    func getCurrencyById(_ id: UUID) throws -> CurrencyEntity? {
+        let fetchRequest = CurrencyEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id = %@",
+                                             id.description)
+        
+        return try self.context.fetch(fetchRequest).first
+    }
+    
+    func getAllCurrencies() throws -> [ResponseCurrencyModel] {
         let fetchRequest = CurrencyEntity.fetchRequest()
         let currencies = try self.context.fetch(fetchRequest)
         
         return currencies.compactMap { ResponseCurrencyModel(model: $0) }
     }
     
-    func createCurrency(model: RequestCurrencyModel) throws {
+    func createCurrency(model: RequestCurrencyModel) {
         guard let entity = NSEntityDescription.entity(forEntityName: "CurrencyEntity",
                                                       in: self.context)
         else { return }
         
-        let savedCurrencies = try self.getListCurrencies()
-        
-        if savedCurrencies.contains(where: { $0.name == model.name}) == false {
-            let currencyEntity = CurrencyEntity(entity: entity, insertInto: self.context)
-            currencyEntity.setRequestModel(from: model)
-        }
+        let currencyEntity = CurrencyEntity(entity: entity, insertInto: self.context)
+        currencyEntity.setRequestModel(from: model)
         
         self.saveContext()
     }

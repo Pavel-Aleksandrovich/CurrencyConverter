@@ -1,13 +1,13 @@
 //
-//  RequestFavoriteCurrencyModel.swift
+//  RequestCurrencyModel.swift
 //  CurrencyConverter
 //
-//  Created by pavel mishanin on 07.09.2022.
+//  Created by pavel mishanin on 11.09.2022.
 //
 
 import Foundation
 
-struct RequestFavoriteCurrencyModel {
+struct RequestCurrencyModel {
     let id: UUID
     let name: String
     let isFavorite: Bool
@@ -15,10 +15,10 @@ struct RequestFavoriteCurrencyModel {
     let nominal: String
     let valueRub: String
     
-    init(model: ListCurrencyViewModel) {
-        self.id = model.id
+    init(model: CurrencyDTO) {
+        self.id = UUID()
         self.name = model.name
-        self.isFavorite = !model.isFavorite
+        self.isFavorite = false
         self.charCode = model.charCode
         self.nominal = model.nominal
         self.valueRub = model.valueRub

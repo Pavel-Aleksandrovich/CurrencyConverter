@@ -14,15 +14,20 @@ protocol INetworkService {
 final class NetworkService {
     
     private let session = URLSession.shared
+    
+    enum Url: String {
+        case currency = "http://www.cbr.ru/scripts/XML_daily.asp"
+    }
 }
 
 extension NetworkService: INetworkService {
     
     func loadData(completion: @escaping(Result<Data, NetworkError>) -> ()) {
         
-        guard let url = URL(string: "http://www.cbr.ru/scripts/XML_daily.asp") else {
+        guard let url = URL(string: Url.currency.rawValue) else {
             completion(.failure(.invalidURL))
-            return }
+            return
+        }
         
         let request = URLRequest(url: url, timeoutInterval: 30)
         

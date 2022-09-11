@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ICurrencySelectionViewController: AnyObject {
-    var onCellTappedHandler: ((ResponseCurrencyModel) -> ())? { get set }
+    var onCellTappedHandler: ((ListCurrencyViewModel) -> ())? { get set }
     func reloadData()
 }
 
@@ -17,7 +17,7 @@ final class CurrencySelectionViewController: UIViewController {
     private let presenter: ICurrencySelectionPresenter
     private let mainView = CurrencySelectionView()
     
-    var onCellTappedHandler: ((ResponseCurrencyModel) -> ())?
+    var onCellTappedHandler: ((ListCurrencyViewModel) -> ())?
     
     init(presenter: ICurrencySelectionPresenter) {
         self.presenter = presenter
