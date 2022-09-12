@@ -144,6 +144,7 @@ private extension CurrencyConverterPresenter {
             self.rotationCurrencies()
         case .removeAll:
             result = self.formatter.string(from: Double(0))
+            result.removeLast()
         case .comma:
             result = self.converter.addСomma(type.rawValue,
                           toString: string)
