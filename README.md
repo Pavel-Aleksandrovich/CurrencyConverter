@@ -1,5 +1,5 @@
 # CurrencyConverter
-Application for converting different currency
+- Application for converting different currencies
 
 ## Branch
 - Current branch - **main**
@@ -16,6 +16,7 @@ Application for converting different currency
 - VIPER
 - Core Data
 - URLSession
+- XMLParser
 - UI programmatically (Constraints). Without Storyboard
 - DI
 - Unit and UI Tests
@@ -27,4 +28,5 @@ Application for converting different currency
 ## Author
 
 Pavel Mishanin
+
 **t.me/pavel_mishanin**
